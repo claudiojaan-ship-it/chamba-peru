@@ -1,0 +1,1235 @@
+{
+ "_ayuda": "Catálogo de programas gratuitos. estado: fechas (usa abre/cierra), permanente, anual o sin-convocatoria. 'proximo' explica la siguiente ventana. Cada día se verifica la url y se ocultan los enlaces rotos. Revisado el 2026-10-21.",
+ "items": [
+  {
+   "id": "uni",
+   "cat": "cursos",
+   "ambito": "pe",
+   "para": [
+    "est",
+    "trab",
+    "jov"
+   ],
+   "img": "x-laptop",
+   "title": "80+ cursos gratis de la UNI (PIT-UNI)",
+   "inst": "Universidad Nacional de Ingeniería",
+   "desc": "Cursos 100% virtuales con clases en vivo: Excel y Power BI, Python, IA, ciberseguridad, AutoCAD, BIM, normas ISO y gestión de proyectos.",
+   "facts": [
+    "Abierto a estudiantes de cualquier institución: crea tu cuenta con tu correo",
+    "El curso es gratis; el certificado aprobatorio es opcional y cuesta S/ 50"
+   ],
+   "estado": "fechas",
+   "abre": "2026-10-15",
+   "cierra": "2026-10-26",
+   "proximo": "El PIT-UNI abre nuevos ciclos varias veces al año",
+   "url": "https://cursosgratuitos.uni.edu.pe/",
+   "src": "Portal oficial PIT-UNI"
+  },
+  {
+   "id": "beca18",
+   "cat": "becas",
+   "ambito": "pe",
+   "para": [
+    "est",
+    "jov"
+   ],
+   "img": "x-becas",
+   "title": "Beca 18 · Convocatoria 2027",
+   "inst": "Pronabec · Minedu",
+   "desc": "6 000 becas integrales para estudiar una carrera universitaria o técnica. La inscripción al examen de preselección ya cerró; ahora viene la postulación a la beca.",
+   "facts": [
+    "Examen de preselección: 22 de noviembre de 2026",
+    "Preseleccionados: 23 de diciembre de 2026",
+    "Postulación a la beca: 7 ene–25 feb y 7–30 abr de 2027"
+   ],
+   "estado": "fechas",
+   "abre": "2027-01-07",
+   "cierra": "2027-02-25",
+   "proximo": "Segundo momento de postulación: 7 al 30 de abril de 2027",
+   "url": "https://www.pronabec.gob.pe/beca-18/",
+   "src": "Pronabec · El Peruano · Andina",
+   "more": [
+    [
+     "Andina: cronograma completo",
+     "https://andina.pe/agencia/noticia-atencion-jovenes-hoy-vence-inscripcion-a-beca-182027-1095395.aspx"
+    ]
+   ]
+  },
+  {
+   "id": "hijos-docentes",
+   "cat": "becas",
+   "ambito": "pe",
+   "para": [
+    "est",
+    "jov"
+   ],
+   "img": "x-library",
+   "title": "Beca Hijos de Docentes",
+   "inst": "Pronabec",
+   "desc": "Beca integral para hijas e hijos de docentes de la carrera pública magisterial que quieren estudiar en universidades o institutos.",
+   "facts": [
+    "Cubre matrícula, pensión, materiales, alimentación y movilidad"
+   ],
+   "estado": "anual",
+   "proximo": "Convocatoria anual de Pronabec; revisa el calendario oficial",
+   "url": "https://www.gob.pe/23119-participar-de-la-convocatoria-al-concurso-beca-hijos-de-docentes",
+   "src": "gob.pe"
+  },
+  {
+   "id": "tecnico-productiva",
+   "cat": "becas",
+   "ambito": "pe",
+   "para": [
+    "est",
+    "jov",
+    "trab"
+   ],
+   "img": "x-vivienda",
+   "title": "Beca Técnico Productiva (Repared)",
+   "inst": "Pronabec",
+   "desc": "Para víctimas de la violencia de 1980–2000 y sus familiares inscritos en el Registro Único de Víctimas: estudios técnico productivos gratuitos.",
+   "facts": [
+    "Estudios cortos para conseguir empleo rápido"
+   ],
+   "estado": "anual",
+   "proximo": "Convocatoria anual de Pronabec",
+   "url": "https://www.gob.pe/12075-postular-a-beca-tecnico-productiva-repared",
+   "src": "gob.pe"
+  },
+  {
+   "id": "inclusion",
+   "cat": "becas",
+   "ambito": "pe",
+   "para": [
+    "est",
+    "jov",
+    "may"
+   ],
+   "img": "x-becas",
+   "title": "Beca Inclusión",
+   "inst": "Pronabec",
+   "desc": "Beca para personas con discapacidad que quieren estudiar una carrera profesional o técnica.",
+   "facts": [
+    "Requiere estar inscrito en el registro de CONADIS"
+   ],
+   "estado": "anual",
+   "proximo": "Convocatoria anual de Pronabec",
+   "url": "https://www.gob.pe/44161-beca-inclusion-carreras-profesionales",
+   "src": "gob.pe"
+  },
+  {
+   "id": "beca-peru",
+   "cat": "becas",
+   "ambito": "pe",
+   "para": [
+    "est",
+    "jov"
+   ],
+   "img": "x-library",
+   "title": "Beca Perú",
+   "inst": "Pronabec",
+   "desc": "Becas para estudiantes que ya cursan una carrera y necesitan apoyo para terminarla en instituciones privadas.",
+   "facts": [
+    "En 2026 ofreció 291 vacantes en 15 regiones (segunda convocatoria cerró el 8 de julio)"
+   ],
+   "estado": "anual",
+   "proximo": "Atento a la convocatoria 2027",
+   "url": "https://www.gob.pe/48037-beca-peru",
+   "src": "gob.pe · ProActivo"
+  },
+  {
+   "id": "alianza-pacifico",
+   "cat": "becas",
+   "ambito": "intl",
+   "para": [
+    "est"
+   ],
+   "img": "x-cusco",
+   "title": "Beca Alianza del Pacífico",
+   "inst": "Alianza del Pacífico (Chile, Colombia, México, Perú)",
+   "desc": "Intercambio académico de un semestre para estudiantes de pregrado, doctorado, investigadores y docentes en universidades de Chile, Colombia o México.",
+   "facts": [
+    "Cubre pasaje, manutención mensual y seguro médico"
+   ],
+   "estado": "anual",
+   "proximo": "Revisa las fechas de la nueva convocatoria en el portal oficial",
+   "url": "https://becas.alianzapacifico.net/",
+   "src": "gob.pe"
+  },
+  {
+   "id": "bicentenario",
+   "cat": "becas",
+   "ambito": "intl",
+   "para": [
+    "trab"
+   ],
+   "img": "x-cusco",
+   "title": "Beca Generación del Bicentenario",
+   "inst": "Pronabec",
+   "desc": "Beca de maestría o doctorado en las mejores universidades del mundo. En 2026 no hubo convocatoria por falta de presupuesto.",
+   "facts": [
+    "Los becarios actuales mantienen su financiamiento"
+   ],
+   "estado": "sin-convocatoria",
+   "proximo": "Pronabec está rediseñando el programa",
+   "url": "https://www.gob.pe/pronabec",
+   "src": "Canal N",
+   "more": [
+    [
+     "Canal N: por qué no hubo convocatoria",
+     "https://canaln.pe/actualidad/pronabec-no-hubo-convocatoria-beca-bicentenario-falta-presupuesto-n491838"
+    ]
+   ]
+  },
+  {
+   "id": "chevening",
+   "cat": "becas",
+   "ambito": "intl",
+   "para": [
+    "trab"
+   ],
+   "img": "x-london",
+   "title": "Becas Chevening (Reino Unido)",
+   "inst": "Gobierno del Reino Unido",
+   "desc": "Maestría de un año en cualquier universidad del Reino Unido, con todo pagado: matrícula, pasajes y manutención.",
+   "facts": [
+    "Requiere 2 años de experiencia laboral y título universitario",
+    "Debes regresar al Perú al menos 2 años después"
+   ],
+   "estado": "fechas",
+   "abre": "2026-08-04",
+   "cierra": "2026-10-06",
+   "proximo": "La próxima convocatoria suele abrir en agosto",
+   "url": "https://www.chevening.org/scholarship/peru/",
+   "src": "British Council · Chevening"
+  },
+  {
+   "id": "fulbright",
+   "cat": "becas",
+   "ambito": "intl",
+   "para": [
+    "trab"
+   ],
+   "img": "x-usa",
+   "title": "Becas Fulbright (Estados Unidos)",
+   "inst": "Comisión Fulbright del Perú",
+   "desc": "Becas de maestría y doctorado en universidades de Estados Unidos para profesionales peruanos.",
+   "facts": [
+    "Requiere buen nivel de inglés"
+   ],
+   "estado": "anual",
+   "proximo": "La convocatoria peruana suele cerrar a mediados de año",
+   "url": "https://www.fulbright.pe/",
+   "src": "fulbright.pe"
+  },
+  {
+   "id": "daad",
+   "cat": "becas",
+   "ambito": "intl",
+   "para": [
+    "trab",
+    "est"
+   ],
+   "img": "x-berlin",
+   "title": "Becas DAAD (Alemania)",
+   "inst": "Servicio Alemán de Intercambio Académico",
+   "desc": "Buscador oficial con cientos de becas para estudiar o investigar en Alemania, muchas con programas en inglés.",
+   "facts": [
+    "Cada beca tiene sus propias fechas: usa el buscador"
+   ],
+   "estado": "permanente",
+   "url": "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/",
+   "src": "DAAD"
+  },
+  {
+   "id": "erasmus",
+   "cat": "becas",
+   "ambito": "intl",
+   "para": [
+    "trab",
+    "est"
+   ],
+   "img": "x-paris",
+   "title": "Erasmus Mundus (Europa)",
+   "inst": "Unión Europea",
+   "desc": "Maestrías conjuntas en dos o más países europeos con beca completa para estudiantes de todo el mundo.",
+   "facts": [
+    "Cada maestría tiene su propia fecha; muchas cierran entre diciembre y febrero"
+   ],
+   "estado": "permanente",
+   "url": "https://erasmus-plus.ec.europa.eu/opportunities/opportunities-for-individuals/students/erasmus-mundus-joint-masters",
+   "src": "Comisión Europea"
+  },
+  {
+   "id": "mext",
+   "cat": "becas",
+   "ambito": "intl",
+   "para": [
+    "est",
+    "trab"
+   ],
+   "img": "x-tokyo",
+   "title": "Beca MEXT (Japón)",
+   "inst": "Gobierno de Japón",
+   "desc": "Becas para pregrado, posgrado y estudios técnicos en Japón, con pasajes y manutención mensual.",
+   "facts": [
+    "Se postula por la Embajada de Japón en el Perú"
+   ],
+   "estado": "anual",
+   "proximo": "La embajada suele convocar alrededor de abril",
+   "url": "https://www.studyinjapan.go.jp/en/planning/scholarships/",
+   "src": "Study in Japan"
+  },
+  {
+   "id": "gks",
+   "cat": "becas",
+   "ambito": "intl",
+   "para": [
+    "est",
+    "trab"
+   ],
+   "img": "x-seoul",
+   "title": "Beca del Gobierno de Corea (GKS)",
+   "inst": "Gobierno de Corea del Sur",
+   "desc": "Pregrado o posgrado en Corea, con un año de coreano incluido, pasajes y manutención.",
+   "facts": [
+    "Pregrado 2027 por embajada: cerró el 30 de setiembre de 2026"
+   ],
+   "estado": "anual",
+   "proximo": "Posgrado 2027: se espera entre febrero y marzo (por confirmar)",
+   "url": "https://www.studyinkorea.go.kr/",
+   "src": "Ministerio de Asuntos Exteriores de Corea"
+  },
+  {
+   "id": "carolina",
+   "cat": "becas",
+   "ambito": "intl",
+   "para": [
+    "trab"
+   ],
+   "img": "x-madrid",
+   "title": "Fundación Carolina (España)",
+   "inst": "Fundación Carolina",
+   "desc": "Cientos de becas de posgrado, doctorado y estancias cortas en España para latinoamericanos.",
+   "facts": [
+    "La convocatoria 2026–2027 abrió el 12 de enero con 736 becas"
+   ],
+   "estado": "anual",
+   "proximo": "Suele abrir en enero",
+   "url": "https://www.fundacioncarolina.es/",
+   "src": "Fundación Carolina"
+  },
+  {
+   "id": "hungaricum",
+   "cat": "becas",
+   "ambito": "intl",
+   "para": [
+    "est",
+    "trab"
+   ],
+   "img": "x-budapest",
+   "title": "Stipendium Hungaricum (Hungría)",
+   "inst": "Gobierno de Hungría",
+   "desc": "Pregrado, maestría o doctorado gratis en Hungría con alojamiento y manutención.",
+   "facts": [
+    "La convocatoria anterior cerró el 15 de enero de 2026"
+   ],
+   "estado": "anual",
+   "proximo": "Se espera que abra en noviembre de 2026 (por confirmar)",
+   "url": "https://stipendiumhungaricum.hu/",
+   "src": "Tempus Public Foundation"
+  },
+  {
+   "id": "turkiye",
+   "cat": "becas",
+   "ambito": "intl",
+   "para": [
+    "est",
+    "trab"
+   ],
+   "img": "x-istanbul",
+   "title": "Türkiye Burslari (Turquía)",
+   "inst": "Gobierno de Turquía",
+   "desc": "Becas completas de pregrado y posgrado en Turquía, con curso de turco incluido.",
+   "facts": [
+    "Postulación en línea"
+   ],
+   "estado": "anual",
+   "proximo": "Se espera del 10 de enero al 20 de febrero de 2027 (por confirmar)",
+   "url": "https://www.turkiyeburslari.gov.tr/",
+   "src": "YTB"
+  },
+  {
+   "id": "eiffel",
+   "cat": "becas",
+   "ambito": "intl",
+   "para": [
+    "trab"
+   ],
+   "img": "x-paris",
+   "title": "Beca Eiffel (Francia)",
+   "inst": "Ministerio de Europa y Asuntos Exteriores de Francia",
+   "desc": "Maestría o doctorado en Francia. La postulación la presenta la universidad francesa que te admite.",
+   "facts": [
+    "Primero consigue la admisión en una universidad francesa"
+   ],
+   "estado": "anual",
+   "proximo": "Suele cerrar en enero",
+   "url": "https://www.campusfrance.org/en/eiffel-scholarship-program-of-excellence",
+   "src": "Campus France"
+  },
+  {
+   "id": "pearson",
+   "cat": "becas",
+   "ambito": "intl",
+   "para": [
+    "est",
+    "jov"
+   ],
+   "img": "x-toronto",
+   "title": "Beca Lester B. Pearson (Canadá)",
+   "inst": "Universidad de Toronto",
+   "desc": "Cuatro años de pregrado en Toronto con todo pagado para escolares destacados. Tu colegio tiene que nominarte.",
+   "facts": [
+    "Si tu colegio ya te nominó, la solicitud vence el 6 de noviembre de 2026"
+   ],
+   "estado": "fechas",
+   "abre": "2026-07-06",
+   "cierra": "2026-10-09",
+   "proximo": "Nominaciones de colegios: suelen abrir en julio",
+   "url": "https://future.utoronto.ca/pearson/",
+   "src": "Universidad de Toronto"
+  },
+  {
+   "id": "oea",
+   "cat": "becas",
+   "ambito": "intl",
+   "para": [
+    "est",
+    "trab"
+   ],
+   "img": "x-usa",
+   "title": "Becas OEA",
+   "inst": "Organización de los Estados Americanos",
+   "desc": "Becas y descuentos para maestrías, doctorados y cursos en universidades de América, varios en línea.",
+   "facts": [
+    "Hay convocatorias abiertas casi todo el año"
+   ],
+   "estado": "permanente",
+   "url": "https://www.oas.org/es/becas/",
+   "src": "OEA"
+  },
+  {
+   "id": "quebec",
+   "cat": "becas",
+   "ambito": "intl",
+   "para": [
+    "trab"
+   ],
+   "img": "x-toronto",
+   "title": "Posgrados en Quebec sin tasas extra",
+   "inst": "Pronabec · Gobierno de Quebec",
+   "desc": "Exoneración de las tasas complementarias para maestrías y doctorados en universidades de Quebec, Canadá.",
+   "facts": [
+    "Para profesionales admitidos o en admisión"
+   ],
+   "estado": "anual",
+   "proximo": "Pronabec la difunde cada año",
+   "url": "https://www.gob.pe/pronabec",
+   "src": "El Peruano",
+   "more": [
+    [
+     "El Peruano: becas en Quebec",
+     "https://www.elperuano.pe/noticia/293048-peruanos-podran-estudiar-posgrados-en-universidades-de-quebec-con-exoneracion-total-de-tasas-academicas"
+    ]
+   ]
+  },
+  {
+   "id": "work-holiday",
+   "cat": "empleo",
+   "ambito": "intl",
+   "para": [
+    "jov",
+    "trab"
+   ],
+   "img": "x-sydney",
+   "title": "Work and Holiday en Australia",
+   "inst": "Gobierno de Australia",
+   "desc": "Visa para que jóvenes peruanos viajen, trabajen y estudien en Australia hasta por un año.",
+   "facts": [
+    "Cupos limitados cada año",
+    "Requiere inglés funcional, título o estudios superiores y fondos de respaldo"
+   ],
+   "estado": "anual",
+   "proximo": "Los cupos se renuevan cada julio",
+   "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-462",
+   "src": "Department of Home Affairs"
+  },
+  {
+   "id": "mooc",
+   "cat": "cursos",
+   "ambito": "pe",
+   "para": [
+    "trab",
+    "est"
+   ],
+   "img": "x-library",
+   "title": "Cursos MOOC gratuitos de SERVIR",
+   "inst": "Escuela Nacional de Administración Pública",
+   "desc": "Gestión pública, ética, contrataciones y transformación digital, con certificado gratis si apruebas. Ideal para trabajar en el Estado.",
+   "facts": [
+    "El ciclo 2026-I cerró el 12 de julio"
+   ],
+   "estado": "sin-convocatoria",
+   "proximo": "SERVIR anunció un nuevo ciclo 2026-II",
+   "url": "https://www.gob.pe/cursosmooc",
+   "src": "gob.pe/cursosmooc"
+  },
+  {
+   "id": "capacitat",
+   "cat": "cursos",
+   "ambito": "pe",
+   "para": [
+    "trab",
+    "est",
+    "jov"
+   ],
+   "img": "x-cursos",
+   "title": "Capacita-T: cursos del Ministerio de Trabajo",
+   "inst": "MTPE",
+   "desc": "Más de 200 cursos en línea gratuitos con certificado: ofimática, atención al cliente, emprendimiento y más.",
+   "facts": [
+    "Para trabajadores, desempleados y estudiantes"
+   ],
+   "estado": "permanente",
+   "url": "https://capacitacionlaboral.trabajo.gob.pe/",
+   "src": "MTPE"
+  },
+  {
+   "id": "talento-digital",
+   "cat": "cursos",
+   "ambito": "pe",
+   "para": [
+    "trab",
+    "emp",
+    "jov"
+   ],
+   "img": "x-laptop",
+   "title": "Plataforma Nacional de Talento Digital",
+   "inst": "Presidencia del Consejo de Ministros",
+   "desc": "Cursos gratuitos de marketing digital, emprendimiento, tecnologías emergentes e inteligencia artificial.",
+   "facts": [
+    "Módulos \"Jóvenes digitales\" y \"Seguridad digital\""
+   ],
+   "estado": "permanente",
+   "url": "https://www.gob.pe/talentodigital",
+   "src": "gob.pe"
+  },
+  {
+   "id": "jp",
+   "cat": "cursos",
+   "ambito": "pe",
+   "para": [
+    "jov",
+    "trab"
+   ],
+   "img": "x-programas",
+   "title": "IA, marketing digital y desarrollo web para jóvenes",
+   "inst": "Jóvenes Productivos (MTPE) y UNICEF",
+   "desc": "Ruta certificable en competencias digitales. Prioridad para mujeres jóvenes en pobreza, vulnerabilidad o desempleo.",
+   "facts": [
+    "Desde 15 años, con DNI o carné de extranjería",
+    "100% virtual"
+   ],
+   "estado": "sin-convocatoria",
+   "proximo": "Convocatoria por anunciar",
+   "url": "https://www.gob.pe/jovenes-productivos",
+   "src": "La República, 1 oct 2026"
+  },
+  {
+   "id": "mef",
+   "cat": "cursos",
+   "ambito": "pe",
+   "para": [
+    "trab",
+    "est"
+   ],
+   "img": "x-library",
+   "title": "Centro de Capacitaciones del MEF",
+   "inst": "Ministerio de Economía y Finanzas",
+   "desc": "Cursos virtuales sobre presupuesto público, inversión pública, contrataciones y finanzas públicas.",
+   "facts": [
+    "Útil para quien postula a puestos CAS"
+   ],
+   "estado": "permanente",
+   "url": "https://www.mef.gob.pe/es/centro-de-capacitaciones-del-mef",
+   "src": "MEF"
+  },
+  {
+   "id": "ingles",
+   "cat": "cursos",
+   "ambito": "intl",
+   "para": [
+    "est",
+    "trab",
+    "jov"
+   ],
+   "img": "x-library",
+   "title": "Inglés gratis de cero a A2",
+   "inst": "edX, Edutin y Grupo Vaughan",
+   "desc": "Mide tu nivel y empieza con cursos en línea gratuitos. Útil para turismo, atención al cliente y becas al extranjero.",
+   "facts": [
+    "Inglés básico de la Universidad del Rosario en edX: 4 semanas"
+   ],
+   "estado": "permanente",
+   "url": "https://www.edx.org/es/learn/language/universidad-del-rosario-ingles-para-todos-nivel-basico",
+   "src": "Recopilado por El Paisano",
+   "more": [
+    [
+     "Test de nivel de inglés",
+     "https://grupovaughan.com/test-nivel-ingles/"
+    ],
+    [
+     "Inglés básico A1 (Edutin)",
+     "https://edutin.com/curso-de-ingles-basico-a1"
+    ],
+    [
+     "Inglés A2 (Edutin)",
+     "https://edutin.com/curso-de-ingles-a2"
+    ]
+   ]
+  },
+  {
+   "id": "duolingo",
+   "cat": "cursos",
+   "ambito": "intl",
+   "para": [
+    "est",
+    "trab",
+    "jov",
+    "may"
+   ],
+   "img": "x-laptop",
+   "title": "Duolingo: idiomas gratis",
+   "inst": "Duolingo",
+   "desc": "Aprende inglés, portugués, francés y más desde el celular, unos minutos al día.",
+   "facts": [
+    "Versión gratuita completa con anuncios"
+   ],
+   "estado": "permanente",
+   "url": "https://www.duolingo.com/",
+   "src": "Duolingo"
+  },
+  {
+   "id": "santander",
+   "cat": "cursos",
+   "ambito": "intl",
+   "para": [
+    "est",
+    "trab"
+   ],
+   "img": "x-cursos",
+   "title": "Santander Open Academy",
+   "inst": "Banco Santander",
+   "desc": "Más de 1 000 cursos gratuitos (idiomas, habilidades digitales, liderazgo) y becas de inglés con el British Council por temporadas.",
+   "facts": [
+    "No necesitas ser cliente del banco",
+    "Las becas de inglés 2026 cerraron en marzo y agosto"
+   ],
+   "estado": "permanente",
+   "url": "https://www.santanderopenacademy.com/es/index.html",
+   "src": "Santander Open Academy"
+  },
+  {
+   "id": "oracle-one",
+   "cat": "cursos",
+   "ambito": "intl",
+   "para": [
+    "jov",
+    "est",
+    "trab"
+   ],
+   "img": "x-code",
+   "title": "Oracle Next Education (ONE)",
+   "inst": "Oracle y Alura",
+   "desc": "Formación gratuita en programación, datos e inteligencia artificial de 7 a 12 meses, 100% en línea, para Latinoamérica.",
+   "facts": [
+    "Más de 700 horas de contenido",
+    "Abre por grupos: revisa si hay cupos para Perú"
+   ],
+   "estado": "anual",
+   "proximo": "Abre inscripciones por cohortes",
+   "url": "https://www.oracle.com/lad/education/oracle-next-education/",
+   "src": "Oracle"
+  },
+  {
+   "id": "netacad",
+   "cat": "cursos",
+   "ambito": "intl",
+   "para": [
+    "est",
+    "jov",
+    "trab"
+   ],
+   "img": "x-code",
+   "title": "Cisco Networking Academy",
+   "inst": "Cisco",
+   "desc": "Cursos gratuitos en línea de redes, ciberseguridad, Python e IA, con insignias digitales.",
+   "facts": [
+    "Muchos cursos en español"
+   ],
+   "estado": "permanente",
+   "url": "https://www.netacad.com/",
+   "src": "Cisco"
+  },
+  {
+   "id": "mslearn",
+   "cat": "cursos",
+   "ambito": "intl",
+   "para": [
+    "est",
+    "trab"
+   ],
+   "img": "x-code",
+   "title": "Microsoft Learn",
+   "inst": "Microsoft",
+   "desc": "Rutas gratuitas de Excel, Power BI, Azure, IA y programación, con preparación para certificaciones.",
+   "facts": [
+    "En español"
+   ],
+   "estado": "permanente",
+   "url": "https://learn.microsoft.com/es-es/training/",
+   "src": "Microsoft"
+  },
+  {
+   "id": "fcc",
+   "cat": "cursos",
+   "ambito": "intl",
+   "para": [
+    "est",
+    "jov",
+    "trab"
+   ],
+   "img": "x-code",
+   "title": "freeCodeCamp en español",
+   "inst": "freeCodeCamp",
+   "desc": "Aprende programación web desde cero con certificados gratuitos.",
+   "facts": [
+    "Totalmente gratis y sin anuncios"
+   ],
+   "estado": "permanente",
+   "url": "https://www.freecodecamp.org/espanol/",
+   "src": "freeCodeCamp"
+  },
+  {
+   "id": "khan",
+   "cat": "cursos",
+   "ambito": "intl",
+   "para": [
+    "est",
+    "jov"
+   ],
+   "img": "x-library",
+   "title": "Khan Academy",
+   "inst": "Khan Academy",
+   "desc": "Matemáticas, ciencias y preparación para exámenes de admisión, gratis y en español.",
+   "facts": [
+    "Ideal para el examen de Beca 18 y admisión"
+   ],
+   "estado": "permanente",
+   "url": "https://es.khanacademy.org/",
+   "src": "Khan Academy"
+  },
+  {
+   "id": "harvard",
+   "cat": "cursos",
+   "ambito": "intl",
+   "para": [
+    "est",
+    "trab"
+   ],
+   "img": "x-usa",
+   "title": "Cursos gratis de Harvard (como CS50)",
+   "inst": "Universidad de Harvard",
+   "desc": "Cursos en línea gratuitos de programación, ciencia de datos, negocios y humanidades.",
+   "facts": [
+    "El certificado verificado es opcional y pagado"
+   ],
+   "estado": "permanente",
+   "url": "https://pll.harvard.edu/catalog/free",
+   "src": "Harvard"
+  },
+  {
+   "id": "slim",
+   "cat": "cursos",
+   "ambito": "intl",
+   "para": [
+    "trab",
+    "jov"
+   ],
+   "img": "x-cursos",
+   "title": "Capacítate para el empleo",
+   "inst": "Fundación Carlos Slim",
+   "desc": "Más de 300 cursos gratuitos de oficios y empleos técnicos (electricista, cocina, ventas, cuidado de personas) con constancia.",
+   "facts": [
+    "Desde el celular"
+   ],
+   "estado": "permanente",
+   "url": "https://capacitateparaelempleo.org/",
+   "src": "Fundación Carlos Slim"
+  },
+  {
+   "id": "bid",
+   "cat": "cursos",
+   "ambito": "intl",
+   "para": [
+    "trab"
+   ],
+   "img": "x-library",
+   "title": "Cursos MOOC del BID (INDES)",
+   "inst": "Banco Interamericano de Desarrollo",
+   "desc": "Cursos gratuitos de gestión pública, políticas sociales, economía y desarrollo.",
+   "facts": [
+    "Certificado gratuito en varios cursos"
+   ],
+   "estado": "permanente",
+   "url": "https://indesvirtual.iadb.org/",
+   "src": "BID"
+  },
+  {
+   "id": "coursera",
+   "cat": "cursos",
+   "ambito": "intl",
+   "para": [
+    "est",
+    "trab"
+   ],
+   "img": "x-laptop",
+   "title": "Coursera: cursos gratis y ayuda económica",
+   "inst": "Coursera",
+   "desc": "Puedes ver la mayoría de cursos gratis (modo oyente) y pedir ayuda económica para obtener el certificado.",
+   "facts": [
+    "Universidades y empresas como Google o IBM"
+   ],
+   "estado": "permanente",
+   "url": "https://www.coursera.org/",
+   "src": "Coursera"
+  },
+  {
+   "id": "formate",
+   "cat": "cursos",
+   "ambito": "pe",
+   "para": [
+    "est",
+    "trab"
+   ],
+   "img": "x-cursos",
+   "title": "Buscador de capacitaciones gratuitas (Fórmate)",
+   "inst": "Recomendado por gob.pe",
+   "desc": "Buscador de cursos, charlas, becas y voluntariados gratuitos de entidades públicas, filtrado por tema y público.",
+   "facts": [
+    "Se actualiza con frecuencia"
+   ],
+   "estado": "permanente",
+   "url": "https://www.formate.pe/",
+   "src": "gob.pe"
+  },
+  {
+   "id": "techo",
+   "cat": "vivienda",
+   "ambito": "pe",
+   "para": [
+    "fam",
+    "trab"
+   ],
+   "img": "x-hero",
+   "title": "Techo Propio: ahora también para solteros",
+   "inst": "Ministerio de Vivienda · Fondo MIVIVIENDA",
+   "desc": "Bono para comprar, construir o mejorar tu vivienda. El nuevo reglamento reconoce a las personas solteras como familias unipersonales.",
+   "facts": [
+    "Construcción en terreno propio: S/ 33 000 (hasta S/ 38 610 en zonas como Amazonas, Cusco o Puno)",
+    "Ingreso familiar máximo S/ 2 706 al mes y ahorro mínimo S/ 2 475",
+    "No tener otra vivienda ni haber recibido otro subsidio"
+   ],
+   "estado": "permanente",
+   "url": "https://www.gob.pe/8851-postular-al-bono-familiar-habitacional-techo-propio",
+   "src": "gob.pe · Infobae · El Paisano"
+  },
+  {
+   "id": "bbp",
+   "cat": "vivienda",
+   "ambito": "pe",
+   "para": [
+    "fam",
+    "trab"
+   ],
+   "img": "x-vivienda",
+   "title": "Bono del Buen Pagador: hasta S/ 27 800",
+   "inst": "Fondo MIVIVIENDA",
+   "desc": "Ayuda no reembolsable para quien compra su vivienda con un Crédito MIVIVIENDA y paga puntualmente.",
+   "facts": [
+    "Vivienda de S/ 69 900 a S/ 99 600: S/ 27 800",
+    "Hasta S/ 149 200: S/ 23 200",
+    "Hasta S/ 248 300: S/ 21 200",
+    "Hasta S/ 367 600: S/ 7 900"
+   ],
+   "estado": "permanente",
+   "url": "https://www.mivivienda.com.pe/",
+   "src": "D.S. 011-2026-VIVIENDA según El Peruano"
+  },
+  {
+   "id": "canon",
+   "cat": "vivienda",
+   "ambito": "pe",
+   "para": [
+    "fam"
+   ],
+   "img": "Arequipa",
+   "title": "Techo Propio con canon: convocatorias regionales",
+   "inst": "Ministerio de Vivienda",
+   "desc": "Convocatorias locales financiadas por gobiernos regionales y canon minero, con bonos más altos.",
+   "facts": [
+    "Áncash: S/ 75 000 por familia (R.M. 100-2026-VIVIENDA)",
+    "Arequipa: 119 familias con terreno propio (R.M. 252-2026-VIVIENDA)",
+    "Tacna: 100 familias con Bono Canon (octubre 2026)"
+   ],
+   "estado": "anual",
+   "proximo": "Atento a la convocatoria de tu región",
+   "url": "https://www.gob.pe/institucion/vivienda/campa%C3%B1as",
+   "src": "Ministerio de Vivienda · ProActivo"
+  },
+  {
+   "id": "renta-joven",
+   "cat": "vivienda",
+   "ambito": "pe",
+   "para": [
+    "jov",
+    "trab"
+   ],
+   "img": "x-hero",
+   "title": "Bono Renta Joven (alquiler)",
+   "inst": "Ministerio de Vivienda",
+   "desc": "Subsidio de S/ 500 al mes durante 5 años para jóvenes de 18 a 40 años que alquilan: 70% para el alquiler y 30% para ahorrar para la inicial.",
+   "facts": [
+    "Alquiler de S/ 750 a S/ 1 560 al mes",
+    "La última convocatoria oficial registrada en gob.pe es de diciembre de 2019"
+   ],
+   "estado": "sin-convocatoria",
+   "proximo": "Consulta al 0800 12200 si hay bonos disponibles en tu ciudad",
+   "url": "https://www.gob.pe/8297-acceder-a-bono-renta-joven",
+   "src": "gob.pe"
+  },
+  {
+   "id": "bonogas",
+   "cat": "vivienda",
+   "ambito": "pe",
+   "para": [
+    "fam"
+   ],
+   "img": "x-hero",
+   "title": "BonoGas: gas natural en tu casa",
+   "inst": "Ministerio de Energía y Minas",
+   "desc": "Financia la instalación de gas natural en viviendas de zonas con red, según el estrato del hogar.",
+   "facts": [
+    "Ahorra frente al balón de GLP"
+   ],
+   "estado": "permanente",
+   "url": "https://www.gob.pe/44228-acceder-al-programa-bonogas-para-viviendas",
+   "src": "gob.pe"
+  },
+  {
+   "id": "juntos",
+   "cat": "programas",
+   "ambito": "pe",
+   "para": [
+    "fam"
+   ],
+   "img": "x-family",
+   "title": "Juntos",
+   "inst": "MIDIS",
+   "desc": "S/ 200 cada dos meses para hogares en pobreza con gestantes, niñas, niños o adolescentes, a cambio de controles de salud y asistencia escolar.",
+   "facts": [
+    "Consulta al 0800-00-069"
+   ],
+   "estado": "permanente",
+   "url": "https://www.gob.pe/juntos",
+   "src": "gob.pe"
+  },
+  {
+   "id": "p65",
+   "cat": "programas",
+   "ambito": "pe",
+   "para": [
+    "may"
+   ],
+   "img": "x-alpacas",
+   "title": "Pensión 65",
+   "inst": "MIDIS",
+   "desc": "S/ 250 cada dos meses para personas de 65 años a más en pobreza extrema.",
+   "facts": [
+    "Requiere clasificación socioeconómica (SISFOH)"
+   ],
+   "estado": "permanente",
+   "url": "https://www.gob.pe/pension65",
+   "src": "gob.pe"
+  },
+  {
+   "id": "contigo",
+   "cat": "programas",
+   "ambito": "pe",
+   "para": [
+    "may",
+    "fam"
+   ],
+   "img": "x-cusco",
+   "title": "Contigo",
+   "inst": "MIDIS",
+   "desc": "Pensión no contributiva para personas con discapacidad severa en pobreza. El Gobierno anunció su ampliación en octubre de 2026.",
+   "facts": [
+    "Necesitas el certificado de discapacidad severa"
+   ],
+   "estado": "permanente",
+   "url": "https://www.gob.pe/contigo",
+   "src": "gob.pe"
+  },
+  {
+   "id": "cunamas",
+   "cat": "programas",
+   "ambito": "pe",
+   "para": [
+    "fam"
+   ],
+   "img": "x-family",
+   "title": "Cuna Más",
+   "inst": "MIDIS",
+   "desc": "Cuidado diurno, alimentación y estimulación gratuitos para niñas y niños menores de 3 años, y visitas a familias en zonas rurales.",
+   "facts": [
+    "Para hogares en pobreza"
+   ],
+   "estado": "permanente",
+   "url": "https://www.gob.pe/cunamas",
+   "src": "gob.pe"
+  },
+  {
+   "id": "sis",
+   "cat": "programas",
+   "ambito": "pe",
+   "para": [
+    "fam",
+    "may",
+    "trab",
+    "est"
+   ],
+   "img": "x-family",
+   "title": "SIS Gratuito",
+   "inst": "Seguro Integral de Salud",
+   "desc": "Seguro de salud gratuito para quien no tiene otro seguro. Cubre consultas, medicinas, operaciones y emergencias en establecimientos públicos.",
+   "facts": [
+    "Afíliate con tu DNI"
+   ],
+   "estado": "permanente",
+   "url": "https://www.gob.pe/133-afiliarte-al-sis-gratuito",
+   "src": "gob.pe"
+  },
+  {
+   "id": "defensa",
+   "cat": "programas",
+   "ambito": "pe",
+   "para": [
+    "trab",
+    "fam",
+    "may"
+   ],
+   "img": "x-library",
+   "title": "Defensa legal gratuita",
+   "inst": "Ministerio de Justicia",
+   "desc": "Abogados del Estado gratis para casos penales, de familia (alimentos), laborales y de víctimas.",
+   "facts": [
+    "Atención en todas las regiones"
+   ],
+   "estado": "permanente",
+   "url": "https://www.gob.pe/44174-acceder-al-servicio-de-defensa-legal-gratuita",
+   "src": "gob.pe"
+  },
+  {
+   "id": "llamkasun",
+   "cat": "empleo",
+   "ambito": "pe",
+   "para": [
+    "trab"
+   ],
+   "img": "x-vivienda",
+   "title": "Llamkasun Perú (antes Lurawi)",
+   "inst": "Ministerio de Trabajo",
+   "desc": "Empleo temporal en obras para personas desempleadas, en pobreza o afectadas por desastres.",
+   "facts": [
+    "Las convocatorias se abren por obra y distrito"
+   ],
+   "estado": "permanente",
+   "url": "https://www.gob.pe/llamkasunperu",
+   "src": "gob.pe"
+  },
+  {
+   "id": "falso",
+   "cat": "programas",
+   "ambito": "pe",
+   "para": [
+    "fam",
+    "may",
+    "trab"
+   ],
+   "img": "x-laptop",
+   "title": "Ojo con los bonos falsos",
+   "inst": "Alerta",
+   "desc": "El \"bono de S/ 3 000\" que circula en redes no existe. El Estado no anuncia bonos por WhatsApp ni pide pagos o claves para cobrarlos.",
+   "facts": [
+    "Consulta solo en gob.pe o en el portal del programa",
+    "Nunca compartas tu clave ni códigos SMS"
+   ],
+   "estado": "alerta",
+   "url": "https://eltiempo.pe/bonos-y-subsidios/bono-de-3000-soles-setiembre-y-octubre-2025-existe-link-para-consultar-con-dni/",
+   "src": "El Tiempo"
+  },
+  {
+   "id": "pracmtpe",
+   "cat": "practicas",
+   "ambito": "pe",
+   "para": [
+    "est",
+    "jov"
+   ],
+   "img": "x-cursos",
+   "title": "Prácticas en el Ministerio de Trabajo",
+   "inst": "MTPE",
+   "desc": "Concursos de prácticas preprofesionales y profesionales en Lima y direcciones regionales.",
+   "facts": [
+    "Revisa las bases de cada concurso"
+   ],
+   "estado": "permanente",
+   "url": "https://www2.trabajo.gob.pe/convocatorias-practicas/",
+   "src": "MTPE"
+  },
+  {
+   "id": "talento",
+   "cat": "practicas",
+   "ambito": "pe",
+   "para": [
+    "est",
+    "trab",
+    "jov"
+   ],
+   "img": "x-library",
+   "title": "Talento Perú (SERVIR)",
+   "inst": "Autoridad Nacional del Servicio Civil",
+   "desc": "Buscador oficial de todas las ofertas del Estado, incluidas prácticas. Filtra por departamento y carrera.",
+   "facts": [
+    "Todas las entidades públicas deben publicar aquí"
+   ],
+   "estado": "permanente",
+   "url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml",
+   "src": "SERVIR"
+  },
+  {
+   "id": "empleosperu",
+   "cat": "empleo",
+   "ambito": "pe",
+   "para": [
+    "trab",
+    "jov"
+   ],
+   "img": "x-vivienda",
+   "title": "Empleos Perú y Centro de Empleo",
+   "inst": "Ministerio de Trabajo",
+   "desc": "Bolsa de trabajo pública con orientación vocacional, asesoría para tu CV y talleres gratuitos para conseguir empleo.",
+   "facts": [
+    "Regístrate en línea con tu DNI"
+   ],
+   "estado": "permanente",
+   "url": "https://www.empleosperu.gob.pe/portal-mtpe/",
+   "src": "MTPE"
+  },
+  {
+   "id": "tuempresa",
+   "cat": "emprende",
+   "ambito": "pe",
+   "para": [
+    "emp"
+   ],
+   "img": "x-programas",
+   "title": "Tu Empresa: asesoría gratuita",
+   "inst": "Ministerio de la Producción",
+   "desc": "Asesoría gratis para formalizar tu negocio, vender en línea, conseguir financiamiento y digitalizarte.",
+   "facts": [
+    "Para micro y pequeñas empresas"
+   ],
+   "estado": "permanente",
+   "url": "https://www.gob.pe/tuempresa",
+   "src": "gob.pe"
+  },
+  {
+   "id": "mype",
+   "cat": "emprende",
+   "ambito": "pe",
+   "para": [
+    "emp"
+   ],
+   "img": "x-programas",
+   "title": "Capacitaciones especializadas para MYPE",
+   "inst": "Ministerio de la Producción",
+   "desc": "Talleres gratuitos de gestión, ventas, marketing digital y finanzas para emprendedores.",
+   "facts": [
+    "Presenciales y virtuales"
+   ],
+   "estado": "permanente",
+   "url": "https://www.gob.pe/41790-acceder-a-capacitaciones-para-mype-especializadas",
+   "src": "gob.pe"
+  },
+  {
+   "id": "proinnovate",
+   "cat": "emprende",
+   "ambito": "pe",
+   "para": [
+    "emp"
+   ],
+   "img": "x-laptop",
+   "title": "ProInnóvate y Startup Perú",
+   "inst": "Ministerio de la Producción",
+   "desc": "Concursos con fondos no reembolsables para startups, innovación empresarial y emprendimientos tecnológicos.",
+   "facts": [
+    "Cada concurso tiene sus propias bases"
+   ],
+   "estado": "anual",
+   "proximo": "Revisa los concursos abiertos en la web",
+   "url": "https://proinnovate.gob.pe/",
+   "src": "ProInnóvate"
+  },
+  {
+   "id": "fondoempleo",
+   "cat": "emprende",
+   "ambito": "pe",
+   "para": [
+    "trab",
+    "emp"
+   ],
+   "img": "x-vivienda",
+   "title": "Fondoempleo: concurso de capacitación 2026",
+   "inst": "MTPE · Fondoempleo",
+   "desc": "S/ 10 millones para proyectos de capacitación laboral. Postulan organizaciones de trabajadores y asociaciones sin fines de lucro.",
+   "facts": [
+    "Parte del relanzamiento de Fondoempleo con S/ 120 millones"
+   ],
+   "estado": "fechas",
+   "abre": "2026-11-21",
+   "cierra": "2026-12-04",
+   "proximo": "Nuevo enfoque regional desde 2027",
+   "url": "https://fondoempleo.com.pe/",
+   "src": "El Peruano, 19 oct 2026",
+   "more": [
+    [
+     "El Peruano: relanzamiento",
+     "https://elperuano.pe/noticia/307126-mtpe-relanza-fondoempleo-s120-millones-para-capacitar-en-los-empleos-que-necesita-cada-region"
+    ]
+   ]
+  }
+ ]
+}
