@@ -1,1 +1,1 @@
-u="$1"; r=$(curl -s -o /dev/null -L --max-time 25 -k -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/130 Safari/537.36" -w "%{http_code}" -r 0-2000 "$u"); printf '%s\t%s\n' "$r" "$u"
+u="$1"; r=$(curl -s -o /dev/null -L --connect-timeout 8 --max-time 15 -k -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/130 Safari/537.36" -w "%{http_code}" -r 0-2000 "$u"); printf '%s\t%s\n' "$r" "$u"

@@ -12,7 +12,7 @@ $PY -c "import json,sys;d=json.load(open(sys.argv[1],encoding='utf-8'));assert i
 mv "$W/dl/jobs.new.json" "$W/dl/jobs.json"
 echo "== 2/6 Listando enlaces"; $PY "$T/urls.py" "$ROOT"
 echo "== 3/6 Verificando enlaces"
-xargs -d '\n' -P 24 -n 1 bash "$T/chk.sh" < "$W/urls.txt" > "$W/status.tsv" 2>/dev/null || true
+timeout 1200 xargs -d '\n' -P 32 -n 1 bash "$T/chk.sh" < "$W/urls.txt" > "$W/status.tsv" 2>/dev/null || true
 $PY "$T/rechk.py" "$W/status.tsv" "$W/re.tsv"
 cut -f1 "$W/status.tsv" | sort | uniq -c | tr '\n' ' '; echo
 echo "== 4/6 Logos de instituciones"; $PY "$T/logos.py" "$ROOT"
