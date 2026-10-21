@@ -1,0 +1,909 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Chamba Perú</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Roboto:wght@400;500;700;900&family=Roboto+Condensed:wght@700;800&display=swap">
+<style>
+/* Layout: portal de empleo con cabecera de diario (franja roja, monograma serif blanco, como El Paisano),
+   portada fotográfica que rota entre regiones, bloque de titulares y bolsa de trabajo con logos reales.
+   Un solo tema claro a propósito (identidad del portal), todos los colores explícitos. */
+:root{
+  color-scheme: light;
+  --bg:#F3F4F6; --card:#FFFFFF; --ink:#16191D; --muted:#5B636D; --line:#E1E4E8; --soft:#F8F9FA;
+  --red:#D3131B; --red-dark:#A50E14; --red-deep:#8C0B10; --red-soft:#FCEBEC;
+  --blue:#1D5FA8; --green:#1B7F47; --green-soft:#E6F4EC; --orange:#C96A00; --orange-soft:#FDF1E1; --purple:#6739B0; --teal:#0E7C86; --gold:#F5B700;
+  --f-body:"Roboto", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  --f-disp:"Roboto Condensed", "Arial Narrow", "Roboto", sans-serif;
+  --f-mast:"Playfair Display", Georgia, "Times New Roman", serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-padding-top:110px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
+img{max-width:100%;display:block}
+a{color:var(--red-dark)}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+h1,h2,h3{margin:0;line-height:1.15;text-wrap:balance}
+.ico{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.wrap{max-width:1200px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.num{font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* Cabecera tipo diario */
+.mast{background:var(--red);color:#fff}
+.mast-row{display:flex;align-items:center;gap:12px 22px;padding-block:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px;background:none;border:0;cursor:pointer;padding:0;color:#fff;text-align:left}
+.brand svg{width:52px;height:52px;flex:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}
+.brand b{display:block;font:900 30px/1 var(--f-mast);letter-spacing:-.3px}
+.brand small{display:block;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;opacity:.88;margin-top:5px}
+.hsearch{flex:1 1 320px;max-width:520px;display:flex;border-radius:7px;overflow:hidden;background:#fff;box-shadow:0 2px 0 rgba(0,0,0,.12)}
+.hsearch input{flex:1;min-width:0;border:0;padding:11px 14px;background:transparent;color:var(--ink)}
+.hsearch input:focus{outline:none}
+.hsearch button{border:0;background:var(--ink);color:#fff;width:48px;display:grid;place-items:center;cursor:pointer;font-size:19px}
+.mast-act{margin-left:auto;display:flex;gap:8px;align-items:center}
+.savebtn{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:999px;padding:7px 13px;cursor:pointer;font-weight:700;font-size:13.5px}
+.savebtn:hover{background:rgba(255,255,255,.24)}
+.savebtn b{background:#fff;color:var(--red);border-radius:999px;padding:0 7px;font-size:12px}
+@media (max-width:760px){.hsearch{order:3;flex-basis:100%;max-width:none}.brand b{font-size:26px}.brand svg{width:44px;height:44px}}
+.nav{background:var(--red-deep);position:sticky;top:env(safe-area-inset-top,0px);z-index:20;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:21;background:var(--red-deep)}
+.nav-list{display:flex;overflow-x:auto;scrollbar-width:none}
+.nav-list::-webkit-scrollbar{display:none}
+.nav-list button{flex:none;color:#fff;background:none;border:0;cursor:pointer;padding:11px 15px;font-weight:500;font-size:14.5px;border-bottom:3px solid transparent;white-space:nowrap}
+.nav-list button:hover{background:rgba(255,255,255,.08)}
+.nav-list button[aria-current="page"]{border-bottom-color:var(--gold);font-weight:700}
+
+/* Último (cinta de titulares) */
+.ticker{background:#fff;border-bottom:1px solid var(--line)}
+.ticker .wrap{display:flex;align-items:center;gap:12px;padding-block:8px;min-width:0}
+.ticker .lbl{flex:none;background:var(--red);color:#fff;font:800 12px/1 var(--f-disp);letter-spacing:.08em;padding:6px 9px;border-radius:3px;text-transform:uppercase}
+.tk-view{flex:1;min-width:0;overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent)}
+.tk-track{display:flex;gap:34px;width:max-content;animation:tk 60s linear infinite}
+.tk-view:hover .tk-track{animation-play-state:paused}
+.tk-track button{background:none;border:0;padding:0;cursor:pointer;font-size:13.5px;white-space:nowrap;color:var(--ink)}
+.tk-track button b{color:var(--red-dark)}
+.tk-track button:hover{text-decoration:underline}
+@keyframes tk{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.tk-view{overflow-x:auto}}
+
+/* Portada */
+.hero{position:relative;color:#fff;background:#1d2a33;overflow:hidden}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease}
+.slide.on{opacity:1}
+.slide img{width:100%;height:100%;object-fit:cover;transform:scale(1.04);transition:transform 7s ease-out}
+.slide.on img{transform:scale(1)}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,14,18,.88) 0%,rgba(10,14,18,.62) 50%,rgba(10,14,18,.12) 100%);pointer-events:none}
+.hero .wrap{position:relative;z-index:1;padding-block:46px 30px;display:grid;gap:20px}
+.eyebrow{font:700 12.5px/1 var(--f-body);text-transform:uppercase;letter-spacing:.12em;color:#FFD7D9}
+.hero h1{font:900 clamp(34px,5.4vw,60px)/1.0 var(--f-mast);letter-spacing:-.5px;max-width:14ch}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero p.lead{margin:0;max-width:56ch;font-size:16.5px;color:#E9ECEF}
+.hfind{display:grid;grid-template-columns:2fr 1.2fr 1fr auto;gap:8px;background:#fff;padding:8px;border-radius:10px;max-width:880px;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.hfind input,.hfind select{border:1px solid var(--line);border-radius:6px;padding:11px 12px;background:#fff;color:var(--ink);min-width:0}
+@media (max-width:760px){.hfind{grid-template-columns:1fr 1fr}.hfind input{grid-column:1/-1}.hfind .btn{grid-column:1/-1}}
+.hstats{display:flex;flex-wrap:wrap;gap:10px 28px}
+.hstats div{display:flex;flex-direction:column}
+.hstats b{font:800 30px/1 var(--f-disp)}
+.hstats span{font-size:13px;color:#D5D9DE}
+.hstats .new b{color:var(--gold)}
+.slide-cap{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.slide-cap button.go{display:inline-flex;align-items:center;gap:8px;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 14px 6px 10px;cursor:pointer;font-size:13.5px}
+.slide-cap button.go:hover{background:rgba(0,0,0,.65)}
+.dots{display:flex;gap:6px}
+.dots button{width:9px;height:9px;border-radius:50%;border:0;background:rgba(255,255,255,.45);cursor:pointer;padding:0}
+.dots button[aria-current="true"]{background:#fff;width:22px;border-radius:5px}
+.credit{position:absolute;right:max(10px, env(safe-area-inset-right,0px));bottom:6px;z-index:2;font-size:10.5px;color:rgba(255,255,255,.78);text-decoration:none;background:rgba(0,0,0,.35);padding:1px 6px;border-radius:3px}
+.credit:hover{color:#fff}
+
+/* Piezas */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;background:var(--red);color:#fff;border:0;border-radius:6px;padding:10px 18px;font-weight:700;font-size:14px;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn:hover{background:var(--red-dark)}
+.btn-line{background:#fff;color:var(--red-dark);border:1px solid var(--red)}
+.btn-line:hover{background:var(--red-soft)}
+.btn-ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.btn-ghost:hover{background:var(--soft)}
+.btn-wa{background:#1F8F4E}.btn-wa:hover{background:#17733E}
+.btn-sm{padding:7px 12px;font-size:13px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 13px;font-size:13.5px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;color:var(--ink)}
+.chip:hover{border-color:var(--red);color:var(--red-dark)}
+.chip small{font-size:11.5px;opacity:.7}
+.hero .chip{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.35);color:#fff}
+.hero .chip:hover{background:rgba(255,255,255,.22)}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
+.p-today{background:var(--red);color:#fff}
+.p-week{background:var(--orange-soft);color:#8A4A00}
+.p-open{background:var(--green-soft);color:#14663A}
+.p-new{background:var(--gold);color:#3A2B00}
+.p-sec{background:#F1F3F5;color:#3E4650}
+.tag{display:inline-block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:2px 8px;border-radius:4px;color:#fff}
+
+.page{padding-block:30px 48px}
+.section{margin-top:44px}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.sec-head h2{font:800 27px/1.1 var(--f-disp);letter-spacing:-.2px}
+.sec-head h2::before{content:"";display:block;width:34px;height:4px;background:var(--red);border-radius:2px;margin-bottom:8px}
+.sec-head p{margin:4px 0 0;color:var(--muted);max-width:70ch}
+.linkbtn{background:none;border:0;color:var(--red-dark);font-weight:700;cursor:pointer;padding:4px 0;font-size:14px}
+.linkbtn:hover{text-decoration:underline}
+
+/* Titulares del día */
+.news{display:grid;grid-template-columns:1.35fr 1fr;gap:16px}
+@media (max-width:900px){.news{grid-template-columns:1fr}}
+.lead-story{position:relative;border-radius:12px;overflow:hidden;min-height:360px;display:flex;align-items:flex-end;color:#fff;background:#222}
+.lead-story img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.lead-story::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(0,0,0,.85) 100%)}
+.lead-story .in{position:relative;z-index:1;padding:22px;display:grid;gap:10px}
+.lead-story h3{font:900 30px/1.08 var(--f-mast)}
+.lead-story p{margin:0;color:#E6E9EC;max-width:60ch}
+.side-news{display:grid;gap:10px;align-content:start}
+.sn{display:grid;grid-template-columns:110px 1fr;gap:12px;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;cursor:pointer;text-align:left;padding:0;min-width:0}
+.sn img{width:110px;height:100%;min-height:96px;object-fit:cover}
+.sn div{padding:10px 12px 10px 0;display:grid;gap:4px;align-content:center;min-width:0}
+.sn h3{font:700 18px/1.15 var(--f-mast)}
+.sn span{font-size:12.5px;color:var(--muted)}
+.sn .tag{color:#fff;font-size:10.5px}
+.t-alert{background:var(--red)}
+.sn:hover h3{color:var(--red-dark)}
+
+/* Próximos cierres */
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+@media (max-width:760px){.cal{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.day{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 8px;text-align:center;cursor:pointer;display:grid;gap:2px}
+.day small{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.day b{font:800 24px/1 var(--f-disp)}
+.day span{font-size:12px;color:var(--muted)}
+.day:hover{border-color:var(--red)}
+.day.today{background:var(--red);border-color:var(--red);color:#fff}
+.day.today small,.day.today span{color:#FFE3E4}
+.day i{display:block;height:4px;border-radius:2px;background:var(--red-soft);margin-top:6px;overflow:hidden}
+.day i em{display:block;height:100%;background:var(--red)}
+.day.today i{background:rgba(255,255,255,.3)}.day.today i em{background:#fff}
+
+/* Aviso */
+.flash{display:flex;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-left:5px solid var(--green);border-radius:8px;padding:14px 16px;flex-wrap:wrap}
+.flash b{font-size:15px}
+.flash p{margin:2px 0 0;font-size:13.5px;color:var(--muted)}
+.flash > div{flex:1 1 300px;min-width:0}
+
+/* Regiones */
+.regions{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+@media (max-width:1000px){.regions{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (max-width:760px){.regions{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:480px){.regions{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.rc{position:relative;display:block;aspect-ratio:4/3.2;max-width:100%;border:0;padding:0;border-radius:10px;overflow:hidden;cursor:pointer;color:#fff;text-align:left;background:#2a3138}
+.rc img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.rc:hover img{transform:scale(1.06)}
+.rc::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 35%,rgba(0,0,0,.78) 100%)}
+.rc .rc-t{position:absolute;left:12px;right:12px;bottom:10px;z-index:1}
+.rc strong{display:block;font:800 19px/1.1 var(--f-disp)}
+.rc span{font-size:12.5px;opacity:.92}
+.rc .cnt{position:absolute;top:9px;right:9px;z-index:1;background:var(--red);color:#fff;font-weight:700;font-size:12px;padding:3px 9px;border-radius:999px}
+
+/* Tarjetas de convocatoria */
+.jobs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:980px){.jobs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.jobs{grid-template-columns:minmax(0,1fr)}}
+.job{position:relative;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:9px;min-width:0;transition:box-shadow .2s,border-color .2s}
+.job:hover{border-color:#C9CED4;box-shadow:0 6px 18px rgba(20,25,30,.08)}
+.job .open{position:absolute;inset:0;border:0;background:none;cursor:pointer;border-radius:10px;z-index:0}
+.job > *:not(.open):not(.star){position:relative;z-index:1;pointer-events:none}
+.job .star{pointer-events:auto}
+.job-top{display:flex;gap:11px;align-items:flex-start;padding-right:28px}
+.av{width:46px;height:46px;border-radius:9px;display:grid;place-items:center;color:#fff;font:800 14px/1 var(--f-disp);flex:none;letter-spacing:-.3px;overflow:hidden}
+.av.lg{background:#fff;border:1px solid var(--line)}
+.av.lg img{width:100%;height:100%;object-fit:contain}
+.job-inst{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;line-height:1.25;overflow-wrap:anywhere}
+.job h3{font-size:15.5px;font-weight:700;line-height:1.3;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.job p{margin:0;font-size:13px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.job-meta{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12.5px;color:var(--muted);align-items:center;margin-top:auto;padding-top:8px;border-top:1px dashed var(--line)}
+.job-meta .sal{color:var(--ink);font-weight:700;font-size:14px}
+.job-meta span{display:inline-flex;align-items:center;gap:4px}
+.star{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer;color:var(--muted);font-size:16px;z-index:2}
+.star:hover{color:var(--red)}
+.star[aria-pressed="true"]{color:var(--red);border-color:var(--red);background:var(--red-soft)}
+.star[aria-pressed="true"] .ico{fill:currentColor}
+
+/* Filtros */
+.filters{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px;display:grid;grid-template-columns:2fr repeat(5,1fr);gap:8px}
+.filters input,.filters select{border:1px solid var(--line);border-radius:6px;padding:10px 11px;background:#fff;min-width:0}
+@media (max-width:1000px){.filters{grid-template-columns:repeat(3,minmax(0,1fr))}.filters input{grid-column:1/-1}}
+@media (max-width:620px){.filters{grid-template-columns:1fr 1fr}}
+.results{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0 12px;font-size:13.5px;color:var(--muted)}
+.results b{color:var(--ink)}
+.dchip{display:inline-flex;align-items:center;gap:6px;background:var(--ink);color:#fff;border:0;border-radius:999px;padding:4px 10px;font-size:12.5px;cursor:pointer}
+.more{display:flex;justify-content:center;margin-top:20px}
+.empty{background:#fff;border:1px dashed #C9CED4;border-radius:10px;padding:26px;text-align:center;color:var(--muted)}
+
+/* Bloques con foto */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:820px){.duo{grid-template-columns:1fr}}
+.feature{position:relative;border-radius:12px;overflow:hidden;min-height:300px;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;background:#222}
+.feature img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.feature::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.08) 0%,rgba(0,0,0,.82) 72%)}
+.feature .in{position:relative;z-index:1;padding:20px;display:grid;gap:10px}
+.feature h3{font:900 27px/1.05 var(--f-mast)}
+.feature p{margin:0;color:#E6E9EC;font-size:14px;max-width:52ch}
+.feature .chip{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.4);color:#fff}
+
+/* Beneficios */
+.posts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:980px){.posts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.posts{grid-template-columns:minmax(0,1fr)}}
+.post{background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.post .ph{aspect-ratio:16/8;max-width:100%;position:relative;background:#ddd}
+.post .ph img{width:100%;height:100%;object-fit:cover}
+.post .ph .tag{position:absolute;left:10px;top:10px}
+.post .bd{padding:14px;display:flex;flex-direction:column;gap:8px;flex:1}
+.post h3{font-size:17px;font-weight:700}
+.post p{margin:0;font-size:13.5px;color:var(--muted)}
+.post .facts{margin:2px 0 0;padding:0;list-style:none;display:grid;gap:4px;font-size:13px}
+.post .facts li{display:flex;gap:8px}
+.post .facts li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--red);margin-top:7px;flex:none}
+.post .ft{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:auto;padding-top:10px}
+.post .src{font-size:11.5px;color:var(--muted)}
+.state{font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;align-self:flex-start}
+.s-open{background:var(--green-soft);color:#14663A}.s-soon{background:var(--orange-soft);color:#8A4A00}.s-closed{background:#EEF0F2;color:#4A525B}.s-alert{background:var(--red-soft);color:var(--red-dark)}
+.t-becas{background:var(--blue)}.t-vivienda{background:var(--teal)}.t-cursos{background:var(--green)}.t-programas{background:var(--orange)}.t-practicas{background:var(--purple)}.t-noticias{background:#3D4650}
+.docs{display:grid;gap:6px}
+.docs a{display:flex;align-items:center;gap:8px;font-size:13.5px;overflow-wrap:anywhere}
+
+/* Banner de sección */
+.banner{position:relative;color:#fff;background:#222;overflow:hidden}
+.banner img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.banner::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,10,12,.85),rgba(8,10,12,.35))}
+.banner .wrap{position:relative;z-index:1;padding-block:44px 34px;display:grid;gap:10px}
+.banner h1{font:900 clamp(30px,4.6vw,50px)/1.03 var(--f-mast)}
+.banner p{margin:0;max-width:62ch;color:#E3E7EB}
+.crumbs{font-size:13px;color:#D0D5DA}
+.crumbs button{background:none;border:0;color:#fff;cursor:pointer;padding:0;text-decoration:underline}
+
+/* Región */
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:-30px;position:relative;z-index:2}
+@media (max-width:760px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px;box-shadow:0 6px 18px rgba(0,0,0,.06)}
+.kpi b{display:block;font:800 28px/1 var(--f-disp)}
+.kpi span{font-size:12.5px;color:var(--muted)}
+.logo-wall{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 10px;scrollbar-width:thin}
+.logo-wall button{flex:none;width:112px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 8px;cursor:pointer;display:grid;justify-items:center;gap:6px;text-align:center}
+.logo-wall button:hover{border-color:var(--red)}
+.logo-wall .av{width:64px;height:64px}
+.logo-wall .nm{font-size:11px;line-height:1.2;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.logo-wall b{font-size:12px;color:var(--red-dark)}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:22px;align-items:start}
+@media (max-width:980px){.cols{grid-template-columns:minmax(0,1fr)}}
+.side{display:grid;gap:14px}
+.cols .jobs{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cols .filters{grid-template-columns:repeat(3,minmax(0,1fr))}
+.cols .filters input{grid-column:1/-1}
+@media (max-width:620px){.cols .jobs{grid-template-columns:minmax(0,1fr)}.cols .filters{grid-template-columns:1fr 1fr}}
+.box{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px}
+.box h3{font-size:16px;font-weight:700;margin-bottom:10px}
+.src-list{list-style:none;margin:0;padding:0;display:grid}
+.src-list li{border-top:1px solid var(--line)}
+.src-list li:first-child{border-top:0}
+.src-list button{display:flex;align-items:center;gap:10px;width:100%;background:none;border:0;padding:8px 0;text-align:left;cursor:pointer;color:var(--ink);font-size:13.5px}
+.src-list .nm{flex:1;min-width:0;overflow-wrap:anywhere;line-height:1.3}
+.src-list .ct{font-weight:700;font-size:12px;background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:1px 8px}
+.src-list .av{width:34px;height:34px;font-size:11px;border-radius:7px}
+.src-list button:hover .nm{color:var(--red-dark);text-decoration:underline}
+.portal-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.portal{display:flex;flex-direction:column;gap:2px;border:1px solid var(--line);border-radius:8px;padding:9px 10px;text-decoration:none;color:var(--ink);font-size:13.5px;font-weight:700;min-width:0}
+.portal small{font-weight:400;color:var(--muted);font-size:11.5px}
+.portal:hover{border-color:var(--red);background:var(--red-soft)}
+.sector-bars{display:grid;gap:7px}
+.sb{display:grid;grid-template-columns:100px 1fr 34px;gap:8px;align-items:center;font-size:12.5px;background:none;border:0;padding:0;cursor:pointer;text-align:left}
+.sb .tr{height:9px;background:var(--soft);border-radius:5px;overflow:hidden}
+.sb .tr i{display:block;height:100%;border-radius:5px}
+.sb b{text-align:right}
+.sb:hover span{color:var(--red-dark);text-decoration:underline}
+
+/* Modal */
+.modal{position:fixed;inset:0;z-index:50;background:rgba(10,12,15,.55);display:grid;place-items:center;padding:max(16px, env(safe-area-inset-top,0px)) max(16px, env(safe-area-inset-right,0px)) max(16px, env(safe-area-inset-bottom,0px)) max(16px, env(safe-area-inset-left,0px))}
+.sheet{background:#fff;border-radius:12px;max-width:720px;width:100%;max-height:100%;overflow:auto;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.sheet-h{position:relative;padding:20px 20px 16px;border-bottom:1px solid var(--line);display:grid;gap:8px;background:linear-gradient(180deg,var(--soft),#fff)}
+.sheet-h h2{font:800 24px/1.1 var(--f-disp);padding-right:36px;overflow-wrap:anywhere}
+.sheet-h .av{width:64px;height:64px}
+.x{position:absolute;right:12px;top:12px;border:0;background:#fff;width:34px;height:34px;border-radius:50%;cursor:pointer;display:grid;place-items:center;font-size:18px;box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.sheet-b{padding:16px 20px 22px;display:grid;gap:16px}
+.dl{display:grid;grid-template-columns:150px 1fr;border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:14px;margin:0}
+.dl dt,.dl dd{margin:0;padding:9px 12px;border-top:1px solid var(--line)}
+.dl dt{background:var(--soft);font-weight:700;color:var(--muted);font-size:13px}
+.dl dt:first-of-type,.dl dd:first-of-type{border-top:0}
+.dl dd{overflow-wrap:anywhere}
+@media (max-width:520px){.dl{grid-template-columns:1fr}.dl dd{border-top:0;padding-top:0}}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+.note{font-size:12.5px;color:var(--muted);background:var(--soft);border-radius:8px;padding:10px 12px;margin:0}
+
+/* Tabla, pasos, preguntas */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:#fff}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{padding:9px 12px;text-align:left;border-top:1px solid var(--line);vertical-align:top}
+thead th{border-top:0;background:var(--soft);font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;counter-reset:s}
+@media (max-width:820px){.steps{grid-template-columns:minmax(0,1fr)}}
+.step{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px}
+.step h3{font-size:16px;display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.step h3::before{counter-increment:s;content:counter(s);width:28px;height:28px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;font-size:14px;flex:none}
+.step p{margin:0;font-size:13.5px;color:var(--muted)}
+.faq{display:grid;gap:8px}
+.faq details{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 16px}
+.faq summary{cursor:pointer;font-weight:700}
+.faq p{margin:8px 0 0;color:var(--muted);font-size:14px}
+
+/* Pie */
+.foot{background:#1B1F24;color:#C5CBD2;margin-top:20px}
+.foot-in{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:26px;padding-block:34px}
+@media (max-width:820px){.foot-in{grid-template-columns:1fr}}
+.foot h4{color:#fff;margin:0 0 10px;font-size:14px}
+.foot p{margin:0;font-size:13.5px}
+.foot button{display:block;background:none;border:0;color:#C5CBD2;padding:4px 0;cursor:pointer;font-size:13.5px;text-align:left}
+.foot button:hover{color:#fff;text-decoration:underline}
+.foot .brand{margin-bottom:12px}
+.foot-b{border-top:1px solid #2E343B;padding-block:14px;font-size:12px}
+.foot-b details{margin-top:6px}
+.foot-b summary{cursor:pointer;color:#E2E6EA}
+.foot-b ul{columns:2;column-gap:24px;padding-left:18px;margin:8px 0 0}
+@media (max-width:620px){.foot-b ul{columns:1}}
+.foot-b a{color:#AEB6BF}
+.skel{height:180px;border-radius:10px;background:linear-gradient(90deg,#eceef1 25%,#f6f7f8 50%,#eceef1 75%);background-size:200% 100%;animation:sh 1.2s infinite}
+@keyframes sh{to{background-position:-200% 0}}
+.toast{position:fixed;left:50%;bottom:max(18px, env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(140px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:8px;font-size:14px;transition:transform .25s;z-index:60}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.totop{position:fixed;right:max(16px, env(safe-area-inset-right,0px));bottom:max(16px, env(safe-area-inset-bottom,0px));width:44px;height:44px;border-radius:50%;border:0;background:var(--red);color:#fff;cursor:pointer;box-shadow:0 6px 16px rgba(0,0,0,.25);display:grid;place-items:center;font-size:20px;z-index:30}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="7" fill="#D3131B"/><rect x="0.75" y="0.75" width="62.5" height="62.5" rx="6.5" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="1.5"/><rect x="9" y="10" width="46" height="3.2" fill="#fff"/><text x="32" y="51" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-weight="900" font-size="33" letter-spacing="-1.5" fill="#fff">CP</text></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4z"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 20l1.4-4.2A8 8 0 1 1 8.6 19z"/></symbol>
+  <symbol id="i-cap" viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></symbol>
+</svg>
+
+<header class="mast">
+  <div class="wrap mast-row">
+    <button class="brand" data-go="inicio" aria-label="Chamba Perú, ir al inicio">
+      <svg aria-hidden="true"><use href="#logo"/></svg>
+      <span><b>Chamba Perú</b><small>Empleos · Becas · Bonos · 25 regiones</small></span>
+    </button>
+    <form class="hsearch" id="topSearch" role="search">
+      <input id="tq" type="search" placeholder="Busca un puesto, institución o carrera" aria-label="Buscar convocatorias">
+      <button type="submit" aria-label="Buscar"><svg class="ico"><use href="#i-search"/></svg></button>
+    </form>
+    <div class="mast-act"><button class="savebtn" data-go="guardados"><svg class="ico"><use href="#i-book"/></svg>Guardados <b class="num" id="savedN">0</b></button></div>
+  </div>
+</header>
+<nav class="nav" aria-label="Secciones">
+  <div class="wrap nav-list" id="nav">
+    <button data-go="inicio">Portada</button>
+    <button data-go="empleos">Empleos</button>
+    <button data-go="regiones">Regiones</button>
+    <button data-go="practicas">Prácticas</button>
+    <button data-go="becas">Becas</button>
+    <button data-go="vivienda">Vivienda y bonos</button>
+    <button data-go="cursos">Cursos gratis</button>
+    <button data-go="programas">Programas sociales</button>
+    <button data-go="guias">Cómo postular</button>
+  </div>
+</nav>
+<div class="ticker"><div class="wrap"><span class="lbl">Último</span><div class="tk-view"><div class="tk-track" id="ticker"></div></div></div></div>
+
+<main id="app"></main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <div>
+      <div class="brand"><svg aria-hidden="true" style="width:44px;height:44px"><use href="#logo"/></svg><span><b style="font-size:24px">Chamba Perú</b></span></div>
+      <p>Portal informativo independiente. Reunimos convocatorias públicas y privadas de las 25 regiones y te llevamos a la fuente oficial para postular. No somos una entidad pública ni un empleador, y nunca cobramos por postular.</p>
+    </div>
+    <div>
+      <h4>Empleo</h4>
+      <button data-go="empleos">Todas las convocatorias</button>
+      <button data-go="regiones">Trabajos por región</button>
+      <button data-go="practicas">Prácticas pre y profesionales</button>
+      <button data-go="guardados">Mis convocatorias guardadas</button>
+      <button data-go="guias">Cómo postular y preguntas frecuentes</button>
+    </div>
+    <div>
+      <h4>Beneficios</h4>
+      <button data-go="becas">Becas Pronabec e internacionales</button>
+      <button data-go="vivienda">Techo Propio y Bono del Buen Pagador</button>
+      <button data-go="cursos">Cursos gratis (UNI, SERVIR, MTPE, inglés)</button>
+      <button data-go="programas">Programas sociales y de empleo</button>
+    </div>
+  </div>
+  <div class="wrap foot-b">
+    <div>© 2026 Chamba Perú · <span id="genTxt">Actualización diaria</span>. Recopilación de convocatorias: <a href="https://elpaisano.pe/el-paisano-trabajos/" target="_blank" rel="noopener">El Paisano Trabajos</a> y portales oficiales; logos de cada institución. Cada enlace se prueba en cada actualización; algunas webs del Estado piden una verificación de seguridad al abrirlas.</div>
+    <details><summary>Créditos de las fotografías (Wikimedia Commons)</summary><ul id="credits"></ul></details>
+  </div>
+</footer>
+<button class="totop" id="totop" aria-label="Volver arriba" hidden><svg class="ico"><use href="#i-up"/></svg></button>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/*PHOTOS*/
+const REG = {
+  "Amazonas":["Chachapoyas","Fortaleza de Kuélap","Nororiente"],
+  "Áncash":["Huaraz","Nevado Huascarán","Sierra norte"],
+  "Apurímac":["Abancay","Choquequirao","Sur andino"],
+  "Arequipa":["Arequipa","Catedral y volcán Misti","Sur"],
+  "Ayacucho":["Huamanga","Plaza Mayor de Huamanga","Sur andino"],
+  "Cajamarca":["Cajamarca","Plaza de Armas","Sierra norte"],
+  "Callao":["Callao","Fortaleza del Real Felipe","Capital"],
+  "Cusco":["Cusco","Machu Picchu","Sur andino"],
+  "Huancavelica":["Huancavelica","Vista de la ciudad","Centro"],
+  "Huánuco":["Huánuco","Negritos en la Plaza de Armas","Centro"],
+  "Ica":["Ica","Oasis de Huacachina","Costa sur"],
+  "Junín":["Huancayo","Huancayo","Centro"],
+  "La Libertad":["Trujillo","Chan Chan","Costa norte"],
+  "Lambayeque":["Chiclayo","Plaza de Armas de Chiclayo","Costa norte"],
+  "Lima":["Lima","Lima","Capital"],
+  "Loreto":["Iquitos","Río Itaya, Iquitos","Amazonía"],
+  "Madre de Dios":["Puerto Maldonado","Lago Sandoval","Amazonía"],
+  "Moquegua":["Moquegua","Plaza de Armas","Sur"],
+  "Pasco":["Cerro de Pasco","Bosque de Piedras de Huayllay","Centro"],
+  "Piura":["Piura","Playa de Máncora","Costa norte"],
+  "Puno":["Puno","Islas flotantes de los Uros","Altiplano"],
+  "San Martín":["Moyobamba","Tarapoto","Amazonía"],
+  "Tacna":["Tacna","Parque Topiario","Sur"],
+  "Tumbes":["Tumbes","Monumento al trabajo del mar","Frontera norte"],
+  "Ucayali":["Pucallpa","Plaza de Armas de Pucallpa","Amazonía"]
+};
+const REGS = Object.keys(REG);
+const slug = s => s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+const BYSLUG = Object.fromEntries(REGS.map(r => [slug(r), r]));
+const SECT = {salud:["Salud","#C62828"],justicia:["Justicia y control","#37474F"],nacional:["Entidades nacionales","#1D5FA8"],regional:["Gobierno regional","#0E7C86"],municipal:["Municipalidades","#C96A00"],educacion:["Educación (UGEL / DRE)","#6739B0"],universidad:["Universidades","#2E7D32"],agro:["Agro y ambiente","#7A5A1E"],privado:["Empresas privadas","#AD1457"]};
+const TIPO = {estado:"Estado (CAS y otros)",practicas:"Prácticas",privado:"Sector privado"};
+const NIVEL = {s:"Secundaria completa",t:"Técnico",u:"Universitario",e:"Estudiante o practicante"};
+const SLIDES = [["x-cursos","Lima"],["Arequipa","Arequipa"],["Cusco","Cusco"],["Áncash","Áncash"],["Puno","Puno"],["La Libertad","La Libertad"],["Loreto","Loreto"]];
+
+/* ---------- Becas, vivienda, cursos, programas: revisado el 20/10/2026 ---------- */
+const POSTS = [
+ {id:"uni",cat:"cursos",img:"x-laptop",title:"80+ cursos gratis de la UNI (PIT-UNI)",inst:"Universidad Nacional de Ingeniería",state:["open","Matrícula hasta el 26 oct"],until:"2026-10-26",
+  desc:"Cursos 100% virtuales con clases en vivo: Excel y Power BI, Python, IA, ciberseguridad, AutoCAD, BIM, ISO, gestión de proyectos y más.",
+  facts:["Prerregistro 12–14 oct y matrícula 15–26 oct de 2026","Abierto a estudiantes de cualquier institución: crea tu cuenta con tu correo","El curso es gratis; el certificado aprobatorio es opcional y cuesta S/ 50"],
+  url:"https://cursosgratuitos.uni.edu.pe/",src:"Portal oficial PIT-UNI"},
+ {id:"beca18",cat:"becas",img:"x-becas",title:"Beca 18 · Convocatoria 2027",inst:"Pronabec · Minedu",state:["soon","Examen el 22 nov"],
+  desc:"6 000 becas integrales para estudiar una carrera. La inscripción al Examen Nacional de Preselección cerró el 18 de octubre.",
+  facts:["Lista de aptos: 11 de noviembre de 2026","Examen presencial: domingo 22 de noviembre","Preseleccionados: 23 de diciembre","Postulación a la beca: 7 ene–25 feb y 7–30 abr de 2027"],
+  url:"https://www.pronabec.gob.pe/beca-18/",src:"Pronabec · cronograma según El Peruano y Andina",
+  more:[["El Peruano: ampliación al 18 de octubre","https://elperuano.pe/noticia/306985--lo-ultimo-pronabec-amplia-hasta-este-domingo-18-de-octubre-la-inscripcion-para-postular-a-beca-18"],["Andina: cronograma completo","https://andina.pe/agencia/noticia-atencion-jovenes-hoy-vence-inscripcion-a-beca-182027-1095395.aspx"]]},
+ {id:"techo",cat:"vivienda",img:"x-hero",title:"Techo Propio 2026: ahora también para solteros",inst:"Ministerio de Vivienda · Fondo MIVIVIENDA",state:["open","Requisitos vigentes"],
+  desc:"El nuevo reglamento de Vivienda de Interés Social reconoce a las personas solteras como familias unipersonales que pueden pedir el bono.",
+  facts:["Construcción en terreno propio: S/ 33 000 (hasta S/ 38 610 en zonas como Amazonas, Cusco o Puno)","Con un integrante con discapacidad severa: hasta S/ 41 250","Ingreso familiar máximo S/ 2 706 al mes y ahorro mínimo S/ 2 475","No tener otra vivienda ni haber recibido otro subsidio del Estado"],
+  url:"https://www.gob.pe/8851-postular-al-bono-familiar-habitacional-techo-propio",src:"gob.pe · montos según Infobae y El Paisano",
+  more:[["Infobae: convocatoria nacional 2026","https://www.infobae.com/peru/2026/04/11/techo-propio-2026-desde-el-14-de-abril-podras-postular-a-bonos-de-vivienda/"],["El Paisano: bono para solteros","https://elpaisano.pe/peru/bono-para-solteros-2026-como-postular-al-bono-de-techo-propio-de-hasta-s-52-250/"]]},
+ {id:"bbp",cat:"vivienda",img:"x-vivienda",title:"Bono del Buen Pagador 2026: hasta S/ 27 800",inst:"Fondo MIVIVIENDA",state:["open","Montos 2026"],
+  desc:"Ayuda no reembolsable para quien compra su vivienda con un Crédito MIVIVIENDA y paga puntualmente.",
+  facts:["Vivienda de S/ 69 900 a S/ 99 600: bono de S/ 27 800","Hasta S/ 149 200: S/ 23 200","Hasta S/ 248 300: S/ 21 200","Hasta S/ 367 600: S/ 7 900"],
+  url:"https://www.mivivienda.com.pe/",src:"D.S. 011-2026-VIVIENDA según El Peruano",
+  more:[["El Peruano: nuevos montos","https://elperuano.pe/noticia/298367--gobierno-eleva-hasta-s-27800-el-bono-del-buen-pagador-para-facilitar-acceso-a-vivienda"]]},
+ {id:"canon",cat:"vivienda",img:"Arequipa",title:"Techo Propio con canon: convocatorias regionales",inst:"Ministerio de Vivienda",state:["soon","Atento a tu región"],
+  desc:"Además de la convocatoria nacional, Vivienda abre convocatorias locales financiadas por gobiernos regionales y canon minero.",
+  facts:["Áncash: bono de S/ 75 000 por familia (R.M. 100-2026-VIVIENDA)","Arequipa: tercera convocatoria del año, 119 familias con terreno propio (R.M. 252-2026-VIVIENDA)"],
+  url:"https://www.gob.pe/institucion/vivienda/campa%C3%B1as",src:"Ministerio de Vivienda · nota de ProActivo",
+  more:[["ProActivo: convocatoria con canon minero","https://proactivo.com.pe/lanzan-nueva-convocatoria-del-programa-techo-propio-financiada-con-canon-minero/"]]},
+ {id:"mooc",cat:"cursos",img:"x-library",title:"Cursos MOOC gratuitos de SERVIR",inst:"Escuela Nacional de Administración Pública",state:["soon","Ciclo 2026-II por anunciar"],
+  desc:"Gestión pública, ética, contrataciones y transformación digital. Certificado gratis si apruebas la evaluación final. Ideal para trabajar en el Estado.",
+  facts:["Virtuales y a tu ritmo","El ciclo 2026-I cerró el 12 de julio; SERVIR anunció un nuevo ciclo"],
+  url:"https://www.gob.pe/cursosmooc",src:"gob.pe/cursosmooc"},
+ {id:"capacitat",cat:"cursos",img:"x-cursos",title:"Capacita-T: 200+ cursos del Ministerio de Trabajo",inst:"MTPE",state:["open","Inscripción permanente"],
+  desc:"Cursos en línea gratuitos con certificado verificable para mejorar tu empleabilidad: ofimática, atención al cliente, emprendimiento y más.",
+  facts:["Para trabajadores, desempleados y estudiantes","Certificado digital al terminar"],
+  url:"https://capacitacionlaboral.trabajo.gob.pe/",src:"Portal de capacitación laboral del MTPE"},
+ {id:"jp",cat:"cursos",img:"x-programas",title:"IA, marketing digital y desarrollo web para jóvenes",inst:"Jóvenes Productivos (MTPE) y UNICEF",state:["soon","Convocatoria por anunciar"],
+  desc:"Ruta certificable en competencias digitales en el aula virtual de Jóvenes Productivos. Prioridad para mujeres jóvenes.",
+  facts:["Desde 15 años, con DNI o carné de extranjería","Para personas en pobreza, vulnerabilidad sociolaboral o desempleo","100% virtual"],
+  url:"https://www.gob.pe/jovenes-productivos",src:"La República, 1 oct 2026",
+  more:[["La República: detalles del convenio","https://especial.larepublica.pe/peru-conectado/2026/2026/10/01/cursos-gratis-de-ia-marketing-digital-y-desarrollo-web-para-jovenes-en-peru-como-acceder-10472"]]},
+ {id:"ingles",cat:"cursos",img:"x-library",title:"Inglés gratis: de cero a A2",inst:"edX, Edutin y Grupo Vaughan",state:["open","Siempre disponible"],
+  desc:"Mide tu nivel y empieza con cursos en línea gratuitos. Útil para turismo, atención al cliente y becas al extranjero.",
+  facts:["Test de nivel gratuito (Vaughan)","Inglés básico de la Universidad del Rosario en edX: 4 semanas, 4–6 h por semana","Inglés A1, A2 y para atención al cliente en Edutin"],
+  url:"https://www.edx.org/es/learn/language/universidad-del-rosario-ingles-para-todos-nivel-basico",src:"Recopilado por El Paisano",
+  more:[["Test de nivel de inglés","https://grupovaughan.com/test-nivel-ingles/"],["Inglés básico A1 (Edutin)","https://edutin.com/curso-de-ingles-basico-a1"],["Inglés A2 (Edutin)","https://edutin.com/curso-de-ingles-a2"],["Inglés para atención al cliente","https://edutin.com/curso-de-ingles-para-atencion-al-cliente"],["Inglés empresarial (edX, Anáhuac)","https://www.edx.org/es/learn/english/universidades-anahuac-ingles-empresarial-ventas-gestion-y-liderazgo"]]},
+ {id:"bicent",cat:"becas",img:"x-cusco",title:"Beca Generación del Bicentenario",inst:"Pronabec",state:["closed","Sin convocatoria 2026"],
+  desc:"Pronabec informó que en 2026 no abrió esta beca de posgrado en el extranjero por falta de presupuesto y está rediseñando sus programas.",
+  facts:["Los becarios actuales mantienen su financiamiento","Revisa gob.pe/pronabec para la próxima convocatoria"],
+  url:"https://www.gob.pe/pronabec",src:"Canal N",
+  more:[["Canal N: por qué no hubo convocatoria","https://canaln.pe/actualidad/pronabec-no-hubo-convocatoria-beca-bicentenario-falta-presupuesto-n491838"]]},
+ {id:"quebec",cat:"becas",img:"x-becas",title:"Posgrados en Quebec sin tasas extra",inst:"Pronabec · Gobierno de Quebec",state:["soon","Revisa el calendario"],
+  desc:"Exoneración de las tasas académicas complementarias para maestrías y doctorados en universidades de Quebec, Canadá.",
+  facts:["Para profesionales peruanos admitidos o en proceso de admisión","Pronabec difunde también becas de cooperación en Japón, China y Brasil"],
+  url:"https://www.gob.pe/pronabec",src:"El Peruano",
+  more:[["El Peruano: becas en Quebec","https://www.elperuano.pe/noticia/293048-peruanos-podran-estudiar-posgrados-en-universidades-de-quebec-con-exoneracion-total-de-tasas-academicas"]]},
+ {id:"juntos",cat:"programas",img:"x-programas",title:"Juntos",inst:"MIDIS",state:["open","Programa permanente"],
+  desc:"Transferencia de S/ 200 cada dos meses a hogares en pobreza con gestantes, niñas, niños o adolescentes, a cambio de controles de salud y asistencia escolar.",
+  facts:["Consulta en gob.pe o al 0800-00-069"],url:"https://www.gob.pe/juntos",src:"gob.pe/juntos"},
+ {id:"p65",cat:"programas",img:"x-alpacas",title:"Pensión 65",inst:"MIDIS",state:["open","Programa permanente"],
+  desc:"Subvención de S/ 250 cada dos meses para personas de 65 años a más en pobreza extrema.",
+  facts:["Requiere clasificación socioeconómica (SISFOH)"],url:"https://www.gob.pe/pension65",src:"gob.pe/pension65"},
+ {id:"contigo",cat:"programas",img:"x-cusco",title:"Contigo",inst:"MIDIS",state:["open","Programa permanente"],
+  desc:"Pensión no contributiva para personas con discapacidad severa en situación de pobreza.",
+  facts:["Necesitas el certificado de discapacidad severa"],url:"https://www.gob.pe/contigo",src:"gob.pe/contigo"},
+ {id:"llamkasun",cat:"programas",img:"x-vivienda",title:"Llamkasun Perú (antes Lurawi)",inst:"Ministerio de Trabajo",state:["soon","Según proyectos en tu zona"],
+  desc:"Empleo temporal en obras intensivas en mano de obra para personas desempleadas, en pobreza o afectadas por desastres.",
+  facts:["Las convocatorias se abren por obra y distrito"],url:"https://www.gob.pe/llamkasunperu",src:"gob.pe"},
+ {id:"falso",cat:"programas",img:"x-laptop",title:"Ojo con los bonos falsos",inst:"Verificación",state:["alert","Alerta"],
+  desc:"El \"bono de S/ 3 000\" que circula en redes no existe. El Estado no anuncia bonos por WhatsApp ni pide pagos o claves para cobrarlos.",
+  facts:["Consulta solo en gob.pe o en el portal del programa","Nunca compartas tu clave ni códigos SMS"],
+  url:"https://eltiempo.pe/bonos-y-subsidios/bono-de-3000-soles-setiembre-y-octubre-2025-existe-link-para-consultar-con-dni/",src:"El Tiempo"},
+ {id:"pracmtpe",cat:"practicas",img:"x-cursos",title:"Prácticas en el Ministerio de Trabajo",inst:"MTPE",state:["open","Convocatorias periódicas"],
+  desc:"Concursos de prácticas preprofesionales y profesionales en Lima y direcciones regionales.",
+  facts:["Revisa las bases de cada concurso"],url:"https://www2.trabajo.gob.pe/convocatorias-practicas/",src:"Portal de prácticas del MTPE"},
+ {id:"talento",cat:"practicas",img:"x-library",title:"Talento Perú (SERVIR)",inst:"Autoridad Nacional del Servicio Civil",state:["open","Actualización diaria"],
+  desc:"Buscador oficial de todas las ofertas del Estado, incluidas prácticas. Filtra por departamento y por carrera.",
+  facts:["Todas las entidades públicas deben publicar aquí"],url:"https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml",src:"SERVIR"},
+ {id:"manpower",cat:"noticias",img:"Arequipa",title:"Arequipa y La Libertad superan a Lima en expectativa de contratación",inst:"Forbes Perú",state:["open","10 set 2026"],
+  desc:"ManpowerGroup, cuarto trimestre de 2026: Perú 40%, Arequipa y La Libertad 47%, Lima 42%.",facts:[],
+  url:"https://forbes.pe/economia-y-finanzas/2026-09-10/peru-es-el-segundo-pais-de-la-region-con-las-mayores-expectativas-de-contratacion-para-el-ultimo-trimestre/",src:"Forbes Perú"}
+];
+const P = id => POSTS.find(p => p.id === id);
+const CAT_OF = id => ({becas:"becas",vivienda:"vivienda",cursos:"cursos",programas:"programas",practicas:"practicas",noticias:"programas"})[P(id).cat];
+const UNI = [["Análisis de datos y ofimática","Excel con macros, Power BI básico e intermedio, SPSS, Excel y Word"],["Inteligencia artificial y datos","IA aplicada, Gemini, Copilot, ciencia de datos, Machine Learning con Python"],["Programación y nube","Python, JavaScript, SQL, Git y GitHub, Docker, Linux, AWS, Azure"],["Ciberseguridad y redes","CCNA Cisco, Ethical Hacking, Pentesting, Fortinet"],["Diseño CAD, BIM y UX","AutoCAD, Revit (BIM), Civil 3D, Solidworks, Figma, Canva"],["Normas ISO y SSOMA","ISO 9001, 14001, 27001, 45001, 31000, SSOMA"],["Proyectos y gestión","PMI, Scrum, MS Project, Primavera P6, Six Sigma, inversión pública"]];
+const FAQ = [
+ ["¿Qué es una convocatoria CAS?","Es un contrato administrativo de servicios con el Estado. Tiene sueldo fijo mensual, vacaciones, seguro de salud y gratificaciones. Se gana por concurso: evaluación curricular, a veces examen, y entrevista."],
+ ["¿Cuánto cuesta postular?","Nada. Ninguna entidad pública cobra por postular, y una empresa seria tampoco. Si alguien te pide dinero para darte el puesto, es estafa."],
+ ["¿Qué hago si el enlace pide una verificación?","Algunas webs del Estado (por ejemplo MINSA) muestran una pantalla de seguridad antes de abrir. Espera unos segundos o recarga la página; el enlace sigue siendo el oficial."],
+ ["¿Puedo postular a varias convocatorias a la vez?","Sí, siempre que cumplas los requisitos de cada una. Revisa que los cronogramas no se crucen el día de la entrevista."],
+ ["¿Cada cuánto se actualiza Chamba Perú?","Todos los días. Las convocatorias vencidas desaparecen solas y las nuevas llevan la etiqueta \"Nuevo\"."],
+ ["¿Cómo guardo una convocatoria para revisarla después?","Toca el marcador de la esquina de la tarjeta. Tus guardados quedan en este navegador y los ves en el botón Guardados de arriba."]
+];
+
+/* ---------- Estado ---------- */
+let DB = null, INST = [], LOGO = [], NEWFROM = "9999";
+const TODAY = (() => { const d = new Date(); return new Date(d.getFullYear(), d.getMonth(), d.getDate()); })();
+const ISO = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+const $ = s => document.querySelector(s);
+const esc = t => String(t ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const ico = id => `<svg class="ico"><use href="#${id}"/></svg>`;
+const pd = s => { const [y,m,d] = s.split("-").map(Number); return new Date(y, m-1, d); };
+const MES = ["ene","feb","mar","abr","may","jun","jul","ago","set","oct","nov","dic"];
+const DIA = ["dom","lun","mar","mié","jue","vie","sáb"];
+const fecha = s => { const x = pd(s); return `${x.getDate()} ${MES[x.getMonth()]}`; };
+const soles = n => "S/ " + Math.round(n).toLocaleString("es-PE");
+const nf = n => n.toLocaleString("es-PE");
+const fold = s => (s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+const days = j => Math.round((pd(j.f) - TODAY) / 864e5);
+const isNew = j => j.v >= NEWFROM;
+const live = () => DB ? DB.jobs.filter(j => days(j) >= 0) : [];
+const photo = k => PHOTOS[k] ? PHOTOS[k][0] : "";
+function pill(j){ const d = days(j); return d === 0 ? `<span class="pill p-today">Cierra hoy</span>` : d <= 7 ? `<span class="pill p-week">Cierra en ${d} día${d>1?"s":""}</span>` : `<span class="pill p-open">Vigente</span>`; }
+function avatar(n){
+  const name = INST[n] || "";
+  if (LOGO[n]) return `<span class="av lg"><img src="${LOGO[n]}" alt="Logo de ${esc(name)}" loading="lazy"></span>`;
+  const w = name.replace(/[()\-–.,&]/g," ").split(/\s+/).filter(x => x && !/^(DE|DEL|LA|LAS|LOS|EL|Y|E|EN|S|A|C|SA|SAC|SRL|EIRL|PERU|GRUPO)$/i.test(x));
+  const t = w.length === 1 ? w[0].slice(0,3) : w.slice(0,2).map(x=>x[0]).join(""); let h = 0; for (const c of name) h = (h*31 + c.charCodeAt(0)) >>> 0;
+  const pal = ["#B71C1C","#1D5FA8","#0E7C86","#6739B0","#2E7D32","#C96A00","#37474F","#AD1457","#5D4037","#00695C"];
+  return `<span class="av" style="background:${pal[h%pal.length]}" aria-hidden="true">${esc((t||"?").toUpperCase())}</span>`;
+}
+
+/* ---------- Guardados (solo en este navegador) ---------- */
+const keyOf = j => [j.n, j.p, j.f].join("|");
+let SAVED = new Set();
+try { SAVED = new Set(JSON.parse(localStorage.getItem("cp-saved") || "[]")); } catch {}
+function persist(){ try { localStorage.setItem("cp-saved", JSON.stringify([...SAVED])); } catch {} $("#savedN").textContent = SAVED.size; }
+const starBtn = j => { const on = SAVED.has(keyOf(j)); return `<button class="star" data-star="${j.id}" aria-pressed="${on}" aria-label="${on ? "Quitar de guardados" : "Guardar convocatoria"}">${ico("i-book")}</button>`; };
+
+/* ---------- Piezas ---------- */
+function jobCard(j){
+  return `<article class="job"><button class="open" data-job="${j.id}" aria-label="Ver ${esc(j.p)}"></button>${starBtn(j)}
+    <div class="job-top">${avatar(j.n)}<div style="min-width:0;display:grid;gap:3px"><div class="job-inst">${esc(INST[j.n])}</div><h3>${esc(j.p)}</h3></div></div>
+    <p>${esc(j.q)}</p>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">${isNew(j) ? `<span class="pill p-new">Nuevo</span>` : ""}${pill(j)}<span class="pill p-sec">${esc(SECT[j.c][0])}</span></div>
+    <div class="job-meta">${j.s ? `<span class="sal num">${soles(j.s)}</span>` : `<span>Sueldo en bases</span>`}<span>${ico("i-pin")}${esc(j.r)}</span><span class="num">${ico("i-cal")}Hasta ${fecha(j.f)}</span></div>
+  </article>`;
+}
+function postCard(p){
+  const st = {open:"s-open",soon:"s-soon",closed:"s-closed",alert:"s-alert"}[p.state[0]];
+  const lab = {becas:"Beca",vivienda:"Vivienda",cursos:"Curso gratis",programas:"Programa social",practicas:"Prácticas",noticias:"Noticia"}[p.cat];
+  return `<article class="post" id="post-${p.id}"><div class="ph"><img src="${photo(p.img)}" alt="" loading="lazy"><span class="tag t-${p.cat}">${lab}</span></div>
+    <div class="bd"><span class="state ${st}">${esc(p.state[1])}</span><h3>${esc(p.title)}</h3><div class="job-inst">${esc(p.inst)}</div><p>${esc(p.desc)}</p>
+    ${p.facts.length ? `<ul class="facts">${p.facts.map(f=>`<li>${esc(f)}</li>`).join("")}</ul>` : ""}
+    ${p.more ? `<div class="docs" style="margin-top:4px">${p.more.map(([t,u])=>`<a href="${esc(u)}" target="_blank" rel="noopener">${ico("i-ext")}${esc(t)}</a>`).join("")}</div>` : ""}
+    <div class="ft"><a class="btn btn-sm" href="${esc(p.url)}" target="_blank" rel="noopener">Ir a la fuente oficial ${ico("i-ext")}</a><span class="src">${esc(p.src)}</span></div></div></article>`;
+}
+function regionCard(r){
+  const n = live().filter(j => j.r === r).length;
+  return `<button class="rc" data-region="${r}"><img src="${photo(r)}" alt="${esc(REG[r][1])}" loading="lazy">${DB ? `<span class="cnt num">${n}</span>` : ""}<span class="rc-t"><strong>${esc(r)}</strong><span>${esc(REG[r][1])}</span></span></button>`;
+}
+const credit = k => PHOTOS[k] ? `<a class="credit" href="${PHOTOS[k][3]}" target="_blank" rel="noopener">Foto: ${esc(PHOTOS[k][1])} · ${esc(PHOTOS[k][2])}</a>` : "";
+const skel = n => `<div class="jobs">${Array.from({length:n},()=>`<div class="skel"></div>`).join("")}</div>`;
+
+/* ---------- Lista filtrable ---------- */
+const BLANK = () => ({q:"", r:"", t:"", c:"", n:"", e:"", day:"", sort:"cierre", shown:24});
+let LIST = BLANK();
+function filtered(){
+  const q = fold(LIST.q).split(/\s+/).filter(Boolean);
+  let L = live().filter(j => (!LIST.r || j.r === LIST.r) && (!LIST.t || j.t === LIST.t) && (!LIST.c || j.c === LIST.c) && (!LIST.n || j.e === LIST.n)
+    && (!LIST.day || j.f === LIST.day)
+    && (!LIST.e || (LIST.e === "semana" ? days(j) <= 7 : LIST.e === "hoy" ? days(j) === 0 : LIST.e === "nuevas" ? isNew(j) : LIST.e === "sueldo" ? j.s > 0 : true))
+    && (!q.length || q.every(w => j._s.includes(w))));
+  if (LIST.sort === "cierre") L.sort((a,b) => a.f.localeCompare(b.f) || b.s - a.s);
+  else if (LIST.sort === "sueldo") L.sort((a,b) => b.s - a.s);
+  else if (LIST.sort === "nuevas") L.sort((a,b) => b.v.localeCompare(a.v) || a.f.localeCompare(b.f));
+  else L.sort((a,b) => b.f.localeCompare(a.f));
+  return L;
+}
+function filtersHTML(withRegion){
+  const o = (v,t,cur) => `<option value="${v}"${v===cur?" selected":""}>${esc(t)}</option>`;
+  return `<form class="filters" id="flt" role="search">
+    <input id="fq" type="search" value="${esc(LIST.q)}" placeholder="Puesto, institución, carrera o ciudad" aria-label="Buscar">
+    ${withRegion ? `<select id="fr" aria-label="Región">${o("","Todas las regiones",LIST.r)}${REGS.map(r=>o(r,r,LIST.r)).join("")}</select>` : ""}
+    <select id="ft" aria-label="Tipo">${o("","Todo tipo de empleo",LIST.t)}${Object.entries(TIPO).map(([k,v])=>o(k,v,LIST.t)).join("")}</select>
+    <select id="fn" aria-label="Estudios">${o("","Cualquier nivel de estudios",LIST.n)}${Object.entries(NIVEL).map(([k,v])=>o(k,v,LIST.n)).join("")}</select>
+    <select id="fc" aria-label="Sector">${o("","Todos los sectores",LIST.c)}${Object.entries(SECT).map(([k,v])=>o(k,v[0],LIST.c)).join("")}</select>
+    <select id="fe" aria-label="Plazo">${o("","Cualquier plazo",LIST.e)}${o("nuevas","Nuevas",LIST.e)}${o("hoy","Cierran hoy",LIST.e)}${o("semana","Cierran esta semana",LIST.e)}${o("sueldo","Con sueldo publicado",LIST.e)}</select>
+    <select id="fs" aria-label="Ordenar">${o("cierre","Cierran primero",LIST.sort)}${o("nuevas","Más nuevas",LIST.sort)}${o("sueldo","Mayor sueldo",LIST.sort)}${o("reciente","Plazo más largo",LIST.sort)}</select>
+  </form>
+  <div class="results" id="res"></div><div class="jobs" id="grid"></div><div class="more" id="more"></div>`;
+}
+function renderList(){
+  if (!DB || !$("#grid")) return;
+  const L = filtered();
+  $("#res").innerHTML = `<span><b class="num">${nf(L.length)}</b> convocatorias vigentes${LIST.r ? ` en <b>${esc(LIST.r)}</b>` : ""} ${LIST.day ? `<button class="dchip" data-clearday>Cierran el ${fecha(LIST.day)} ✕</button>` : ""}</span><span>${{sueldo:"Ordenadas por sueldo",cierre:"Ordenadas por fecha de cierre",nuevas:"Las más nuevas primero",reciente:"Plazo más largo primero"}[LIST.sort]}</span>`;
+  $("#grid").innerHTML = L.length ? L.slice(0, LIST.shown).map(jobCard).join("") : `<div class="empty" style="grid-column:1/-1">No hay convocatorias con esos filtros. Prueba con otra palabra o quita un filtro.<br><br><button class="btn btn-line btn-sm" data-reset>Quitar filtros</button></div>`;
+  $("#more").innerHTML = L.length > LIST.shown ? `<button class="btn btn-ghost" data-more>Ver ${Math.min(24, L.length - LIST.shown)} más de ${nf(L.length - LIST.shown)} restantes</button>` : "";
+}
+function bindFilters(){
+  const f = $("#flt"); if (!f) return;
+  const sync = () => { LIST.q = $("#fq").value; if ($("#fr")) LIST.r = $("#fr").value; LIST.t = $("#ft").value; LIST.n = $("#fn").value; LIST.c = $("#fc").value; LIST.e = $("#fe").value; LIST.sort = $("#fs").value; LIST.shown = 24; renderList(); };
+  f.addEventListener("submit", e => { e.preventDefault(); sync(); });
+  f.addEventListener("change", sync);
+  let t; $("#fq").addEventListener("input", () => { clearTimeout(t); t = setTimeout(sync, 200); });
+}
+
+/* ---------- Vistas ---------- */
+const V = {};
+function heroSlides(){
+  return SLIDES.map(([img, r], i) => `<div class="slide${i ? "" : " on"}" data-slide="${i}"><img src="${photo(img)}" alt="" ${i ? 'loading="lazy"' : ""}></div>`).join("");
+}
+function slideCap(i){
+  const [img, r] = SLIDES[i], n = live().filter(j => j.r === r).length;
+  return `<button class="go" data-region="${r}">${ico("i-pin")}<span><b>${esc(r)}</b> · ${esc(r === "Lima" ? "Miraflores" : REG[r][1])}${DB ? ` · <b class="num">${nf(n)}</b> empleos` : ""} →</span></button>`;
+}
+V.inicio = () => {
+  const L = live(), n = L.length, inst = new Set(L.map(j=>j.n)).size, nw = L.filter(isNew).length, today = L.filter(j => days(j) === 0).length;
+  const soon = L.slice().sort((a,b) => a.f.localeCompare(b.f) || b.s - a.s).filter(j => j.s).slice(0,6);
+  const fresh = L.filter(isNew).sort((a,b) => b.s - a.s).slice(0,6);
+  const top = L.slice().sort((a,b) => b.s - a.s).slice(0,3);
+  const cal = Array.from({length:7}, (_,i) => { const d = new Date(TODAY); d.setDate(d.getDate()+i); const k = ISO(d); return [d, k, L.filter(j => j.f === k).length]; });
+  const cmax = Math.max(1, ...cal.map(c=>c[2]));
+  const lead = P("uni"), side = ["techo","beca18","bbp","falso"].map(P);
+  return `<section class="hero">${heroSlides()}
+    <div class="wrap">
+      <span class="eyebrow">Bolsa de trabajo · 25 regiones del Perú</span>
+      <h1>Tu próxima <em>chamba</em> está en tu región</h1>
+      <p class="lead">Convocatorias del Estado, prácticas y empleos privados de Tumbes a Tacna, con el logo de quien contrata y el enlace oficial para postular. Además, becas, bonos de vivienda y cursos gratis.</p>
+      <form class="hfind" id="heroFind" role="search">
+        <input id="hq" type="search" placeholder="¿Qué buscas? Ej.: enfermera, chofer, contador" aria-label="Qué buscas">
+        <select id="hr" aria-label="Región"><option value="">Todo el Perú</option>${REGS.map(r=>`<option>${r}</option>`).join("")}</select>
+        <select id="hn" aria-label="Estudios"><option value="">Cualquier estudio</option>${Object.entries(NIVEL).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")}</select>
+        <button class="btn" type="submit">${ico("i-search")} Buscar</button>
+      </form>
+      <div class="hstats">${DB ? `<div><b class="num">${nf(n)}</b><span>convocatorias vigentes</span></div>${nw ? `<div class="new"><b class="num">${nf(nw)}</b><span>nuevas hoy</span></div>` : ""}<div><b class="num">${nf(inst)}</b><span>instituciones y empresas</span></div><div><b class="num">${nf(today)}</b><span>cierran hoy</span></div>` : `<div><b>…</b><span>Cargando convocatorias</span></div>`}</div>
+      <div class="slide-cap"><span id="slideCap">${slideCap(0)}</span><div class="dots" id="dots">${SLIDES.map((_,i)=>`<button data-dot="${i}" aria-label="Foto ${i+1}" aria-current="${!i}"></button>`).join("")}</div></div>
+    </div><span id="heroCredit">${credit(SLIDES[0][0])}</span></section>
+  <div class="wrap page">
+    <section><div class="sec-head"><div><h2>Lo importante hoy</h2></div></div>
+      <div class="news">
+        <article class="lead-story"><img src="${photo(lead.img)}" alt=""><div class="in"><span class="tag t-cursos" style="justify-self:start">Abierto hasta el 26 de octubre</span><h3>${esc(lead.title)}</h3><p>${esc(lead.desc)}</p><div class="chips"><a class="btn" href="${lead.url}" target="_blank" rel="noopener">Matricularme gratis ${ico("i-ext")}</a><button class="btn btn-ghost" data-go="cursos">Ver más cursos</button></div></div></article>
+        <div class="side-news">${side.map(p => `<button class="sn" data-post="${p.id}"><img src="${photo(p.img)}" alt="" loading="lazy"><div><span class="tag t-${p.state[0] === "alert" ? "alert" : p.cat}" style="justify-self:start">${esc(p.state[1])}</span><h3>${esc(p.title)}</h3><span>${esc(p.inst)}</span></div></button>`).join("")}</div>
+      </div></section>
+
+    <section class="section"><div class="sec-head"><div><h2>Próximos cierres</h2><p>Toca un día para ver qué convocatorias vencen ese día.</p></div></div>
+      ${DB ? `<div class="cal">${cal.map(([d,k,c],i)=>`<button class="day${i?"":" today"}" data-day="${k}"><small>${i ? DIA[d.getDay()] : "Hoy"}</small><b class="num">${d.getDate()}</b><span class="num">${c} convoc.</span><i><em style="width:${c/cmax*100}%"></em></i></button>`).join("")}</div>` : skel(1)}</section>
+
+    ${DB && fresh.length ? `<section class="section"><div class="sec-head"><div><h2>Nuevas hoy</h2><p>Publicadas desde la última actualización.</p></div><button class="linkbtn" data-go="empleos" data-e="nuevas">Ver las ${nf(nw)} nuevas →</button></div><div class="jobs">${fresh.map(jobCard).join("")}</div></section>` : ""}
+
+    <section class="section"><div class="sec-head"><div><h2>Busca trabajo en tu región</h2><p>Cada región tiene su página con convocatorias, logos de quienes están contratando y portales donde buscar.</p></div><button class="linkbtn" data-go="regiones">Ver las 25 regiones →</button></div>
+      <div class="regions">${REGS.map(regionCard).join("")}</div></section>
+
+    <section class="section"><div class="sec-head"><div><h2>Cierran pronto</h2><p>Muchas entidades reciben expedientes solo hasta las 23:59 del último día.</p></div><button class="linkbtn" data-go="empleos" data-e="semana">Ver todas las de esta semana →</button></div>
+      ${DB ? `<div class="jobs">${soon.map(jobCard).join("")}</div>` : skel(6)}</section>
+
+    <section class="section duo">
+      <div class="feature"><img src="${photo("x-becas")}" alt="" loading="lazy"><div class="in"><span class="eyebrow">Si estudias</span><h3>Becas, prácticas y cursos para empezar</h3><p>Beca 18, prácticas en el Estado, cursos gratis de la UNI y de SERVIR, e inglés desde cero.</p>
+        <div class="chips"><button class="chip" data-go="becas">Becas</button><button class="chip" data-go="practicas">Prácticas</button><button class="chip" data-go="cursos">Cursos gratis</button><button class="chip" data-go="empleos" data-n="e">Para estudiantes</button></div></div>${credit("x-becas")}</div>
+      <div class="feature"><img src="${photo("x-hero")}" alt="" loading="lazy"><div class="in"><span class="eyebrow">Si trabajas</span><h3>Tu casa, tus bonos y tu siguiente puesto</h3><p>Techo Propio (ahora también para solteros), Bono del Buen Pagador, capacitación certificada y programas sociales.</p>
+        <div class="chips"><button class="chip" data-go="vivienda">Vivienda y bonos</button><button class="chip" data-go="programas">Programas</button><button class="chip" data-go="empleos" data-n="s">Solo secundaria</button></div></div>${credit("x-hero")}</div>
+    </section>
+
+    <section class="section"><div class="sec-head"><div><h2>Mejor pagadas</h2></div><button class="linkbtn" data-go="empleos" data-sort="sueldo">Ordenar todas por sueldo →</button></div>
+      ${DB ? `<div class="jobs">${top.map(jobCard).join("")}</div>` : skel(3)}</section>
+
+    <section class="section"><div class="sec-head"><div><h2>Por sector y por estudios</h2></div></div>
+      <div style="display:grid;gap:12px"><div class="chips">${Object.entries(SECT).map(([k,v])=>`<button class="chip" data-go="empleos" data-c="${k}">${esc(v[0])} ${DB ? `<small class="num">${nf(L.filter(j=>j.c===k).length)}</small>` : ""}</button>`).join("")}</div>
+      <div class="chips">${Object.entries(NIVEL).map(([k,v])=>`<button class="chip" data-go="empleos" data-n="${k}">${ico("i-cap")} ${esc(v)} ${DB ? `<small class="num">${nf(L.filter(j=>j.e===k).length)}</small>` : ""}</button>`).join("")}</div></div></section>
+  </div>`;
+};
+V.empleos = () => `<section class="banner"><img class="bg" src="${photo("x-vivienda")}" alt=""><div class="wrap"><span class="crumbs"><button data-go="inicio">Portada</button> › Empleos</span><h1>Convocatorias de trabajo 2026</h1><p>CAS del Estado, prácticas y empleos privados en todo el Perú. Filtra por región, estudios, sector y plazo, y entra a la convocatoria oficial.</p></div>${credit("x-vivienda")}</section>
+  <div class="wrap page">${DB ? filtersHTML(true) : skel(6)}</div>`;
+V.guardados = () => {
+  const L = live().filter(j => SAVED.has(keyOf(j))).sort((a,b) => a.f.localeCompare(b.f));
+  return `<section class="banner"><img class="bg" src="${photo("x-library")}" alt=""><div class="wrap"><span class="crumbs"><button data-go="inicio">Portada</button> › Guardados</span><h1>Mis convocatorias guardadas</h1><p>Se guardan solo en este navegador. Las que vencen desaparecen solas.</p></div>${credit("x-library")}</section>
+  <div class="wrap page">${!DB ? skel(3) : L.length ? `<div class="results"><span><b class="num">${L.length}</b> guardadas, ordenadas por fecha de cierre</span></div><div class="jobs">${L.map(jobCard).join("")}</div>` : `<div class="empty">Aún no guardas convocatorias. Toca el marcador de la esquina de cualquier tarjeta para tenerla aquí.<br><br><button class="btn btn-sm" data-go="empleos">Buscar convocatorias</button></div>`}</div>`;
+};
+V.regiones = () => {
+  const zones = {};
+  REGS.forEach(r => (zones[REG[r][2]] ||= []).push(r));
+  return `<section class="banner"><img class="bg" src="${photo("Cusco")}" alt="Machu Picchu"><div class="wrap"><span class="crumbs"><button data-go="inicio">Portada</button> › Regiones</span><h1>Trabajos por región</h1><p>Elige tu región para ver sus convocatorias, quiénes están contratando y los portales donde buscar.</p></div>${credit("Cusco")}</section>
+  <div class="wrap page"><div class="regions">${REGS.map(regionCard).join("")}</div>
+  <section class="section"><div class="sec-head"><div><h2>Por zona</h2></div></div><div class="posts" style="grid-template-columns:repeat(auto-fill,minmax(220px,1fr))">${Object.entries(zones).map(([z,rs])=>`<div class="box"><h3>${esc(z)}</h3><div class="chips">${rs.map(r=>`<button class="chip" data-region="${r}">${esc(r)}${DB?` <small class="num">${live().filter(j=>j.r===r).length}</small>`:""}</button>`).join("")}</div></div>`).join("")}</div></section></div>`;
+};
+function instRow([n,js]){ return `<li><button data-inst="${n}">${avatar(+n)}<span class="nm">${esc(INST[n])}</span><span class="ct num">${js.length}</span></button></li>`; }
+function regionView(r){
+  const L = live().filter(j => j.r === r), [cap, land, zone] = REG[r], s = slug(r);
+  const inst = {}; L.forEach(j => { (inst[j.n] ||= []).push(j); });
+  const insts = Object.entries(inst).sort((a,b) => b[1].length - a[1].length);
+  const week = L.filter(j => days(j) <= 7).length, maxS = Math.max(0, ...L.map(j=>j.s)), nw = L.filter(isNew).length;
+  const sec = Object.keys(SECT).map(k => [k, L.filter(j=>j.c===k).length]).filter(x=>x[1]).sort((a,b)=>b[1]-a[1]);
+  const mx = sec.length ? sec[0][1] : 1, enc = encodeURIComponent;
+  const portals = [
+    ["Computrabajo", `Empleos privados en ${r}`, `https://pe.computrabajo.com/empleos-en-${s}`],
+    ["Bumeran", `Avisos en ${r}`, `https://www.bumeran.com.pe/en-${s}/empleos.html`],
+    ["LinkedIn Empleos", "Empresas y profesionales", `https://www.linkedin.com/jobs/search/?location=${enc(r+", Perú")}`],
+    ["Indeed Perú", "Buscador general", `https://pe.indeed.com/jobs?l=${enc(r)}`],
+    ["Empleos Perú (MTPE)", "Bolsa pública del Estado", "https://mtpe-candidatos.empleosperu.gob.pe/search-jobs"],
+    ["Talento Perú (SERVIR)", "Filtra por departamento", "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml"]
+  ];
+  LIST = {...BLANK(), r, shown:12};
+  return `<section class="banner" style="min-height:280px"><img class="bg" src="${photo(r)}" alt="${esc(land)}"><div class="wrap" style="padding-bottom:56px"><span class="crumbs"><button data-go="inicio">Portada</button> › <button data-go="regiones">Regiones</button> › ${esc(r)}</span><h1>Trabajos en ${esc(r)} 2026</h1><p>${esc(zone)} · Capital: ${esc(cap)}. Convocatorias vigentes del Gobierno Regional, municipalidades, hospitales, UGEL, universidades, entidades nacionales con sede en la región y empresas privadas.</p></div>${credit(r)}</section>
+  <div class="wrap">
+    <div class="kpis"><div class="kpi"><b class="num">${nf(L.length)}</b><span>convocatorias vigentes${nw ? ` · <b style="display:inline;font:inherit;color:#8A6A00">${nw} nuevas</b>` : ""}</span></div><div class="kpi"><b class="num">${nf(insts.length)}</b><span>instituciones contratando</span></div><div class="kpi"><b class="num">${nf(week)}</b><span>cierran esta semana</span></div><div class="kpi"><b class="num">${maxS ? soles(maxS) : "—"}</b><span>sueldo más alto publicado</span></div></div>
+    ${insts.length ? `<section class="section" style="margin-top:26px"><div class="sec-head"><div><h2>Quiénes contratan en ${esc(r)}</h2></div></div><div class="logo-wall">${insts.slice(0,16).map(([n,js]) => `<button data-inst="${n}">${avatar(+n)}<span class="nm">${esc(INST[n])}</span><b class="num">${js.length} convoc.</b></button>`).join("")}</div></section>` : ""}
+  </div>
+  <div class="wrap page cols">
+    <div style="min-width:0">
+      <div class="sec-head"><div><h2>Convocatorias en ${esc(r)}</h2></div></div>
+      ${L.length ? filtersHTML(false) : `<div class="empty">Hoy no encontramos convocatorias vigentes con sede en ${esc(r)}. Revisa los portales de la derecha, que se actualizan a diario, o mira las regiones vecinas.</div>`}
+    </div>
+    <aside class="side">
+      <div class="box"><h3>Todas las instituciones</h3>
+        ${insts.length ? `<ul class="src-list">${insts.slice(0,12).map(instRow).join("")}</ul>${insts.length > 12 ? `<details style="margin-top:6px"><summary class="muted" style="cursor:pointer;font-size:13px">Ver ${insts.length-12} más</summary><ul class="src-list">${insts.slice(12).map(instRow).join("")}</ul></details>` : ""}` : `<p class="muted" style="margin:0;font-size:13.5px">Sin convocatorias vigentes hoy.</p>`}
+      </div>
+      ${sec.length ? `<div class="box"><h3>Por sector</h3><div class="sector-bars">${sec.map(([k,n])=>`<button class="sb" data-sec="${k}"><span>${esc(SECT[k][0])}</span><span class="tr"><i style="width:${Math.max(4,n/mx*100)}%;background:${SECT[k][1]}"></i></span><b class="num">${n}</b></button>`).join("")}</div></div>` : ""}
+      <div class="box"><h3>Busca también en</h3><div class="portal-grid">${portals.map(([t,d,u])=>`<a class="portal" href="${u}" target="_blank" rel="noopener">${esc(t)}<small>${esc(d)}</small></a>`).join("")}</div></div>
+      <div class="box"><h3>Otras regiones de la zona</h3><div class="chips">${REGS.filter(x=>REG[x][2]===zone && x!==r).map(x=>`<button class="chip" data-region="${x}">${esc(x)}</button>`).join("") || `<button class="chip" data-go="regiones">Ver todas</button>`}</div></div>
+    </aside>
+  </div>`;
+}
+function catView(key){
+  const C = {
+    becas:["Becas para estudiar","x-becas","Becas del Pronabec y de cooperación internacional para estudiar una carrera o un posgrado.",["becas"]],
+    vivienda:["Vivienda y bonos","x-hero","Subsidios del Estado para comprar, construir o mejorar tu vivienda, y bonos vigentes.",["vivienda"]],
+    cursos:["Cursos gratis con certificado","x-laptop","Capacítate sin pagar: universidades, SERVIR, Ministerio de Trabajo e inglés en línea.",["cursos"]],
+    programas:["Programas sociales y de empleo","x-programas","Apoyos del MIDIS y programas de empleo temporal. Consulta solo en canales oficiales.",["programas","noticias"]],
+    practicas:["Prácticas pre y profesionales","x-library","Concursos de prácticas en el Estado y empresas. Abajo verás las convocatorias de prácticas vigentes.",["practicas"]]
+  }[key];
+  const [t, img, d, cats] = C;
+  let extra = "";
+  if (key === "cursos") extra = `<section class="section"><div class="sec-head"><div><h2>Qué puedes estudiar gratis en la UNI</h2><p>Ejemplos del último ciclo del PIT-UNI. Cada curso dura entre 16 y 24 horas.</p></div><a class="btn btn-sm" href="https://cursosgratuitos.uni.edu.pe/" target="_blank" rel="noopener">Matricularme ${ico("i-ext")}</a></div>
+    <div class="tbl-wrap"><table><thead><tr><th>Área</th><th>Cursos</th></tr></thead><tbody>${UNI.map(([a,b])=>`<tr><td><b>${esc(a)}</b></td><td>${esc(b)}</td></tr>`).join("")}</tbody></table></div></section>`;
+  if (key === "practicas") { LIST = {...BLANK(), t:"practicas"}; extra = `<section class="section"><div class="sec-head"><div><h2>Convocatorias de prácticas vigentes</h2></div></div>${DB ? filtersHTML(true) : skel(3)}</section>`; }
+  if (key === "vivienda") extra = `<section class="section"><div class="sec-head"><div><h2>Techo Propio en 3 pasos</h2></div></div><div class="steps">
+    <div class="step"><h3>Revisa si calificas</h3><p>No debes tener otra vivienda ni terreno, ni haber recibido otro subsidio. El ingreso familiar no debe pasar de S/ 2 706 al mes.</p></div>
+    <div class="step"><h3>Junta tu ahorro</h3><p>Necesitas un ahorro mínimo (S/ 2 475 para construcción en sitio propio en 2026) en una entidad financiera.</p></div>
+    <div class="step"><h3>Inscríbete en la convocatoria</h3><p>Postula en el portal del Fondo MIVIVIENDA o en sus centros de atención. El trámite es gratis; nadie debe cobrarte por inscribirte.</p></div></div></section>`;
+  return `<section class="banner"><img class="bg" src="${photo(img)}" alt=""><div class="wrap"><span class="crumbs"><button data-go="inicio">Portada</button> › ${esc(t)}</span><h1>${esc(t)}</h1><p>${esc(d)}</p></div>${credit(img)}</section>
+  <div class="wrap page"><div class="posts">${POSTS.filter(p=>cats.includes(p.cat)).map(postCard).join("")}</div>${extra}</div>`;
+}
+V.guias = () => `<section class="banner"><img class="bg" src="${photo("Lima")}" alt=""><div class="wrap"><span class="crumbs"><button data-go="inicio">Portada</button> › Cómo postular</span><h1>Cómo postular a una convocatoria</h1><p>Lo básico para no quedar fuera por un detalle.</p></div>${credit("Lima")}</section>
+ <div class="wrap page">
+  <div class="sec-head"><div><h2>Convocatorias CAS del Estado</h2></div></div>
+  <div class="steps"><div class="step"><h3>Lee las bases completas</h3><p>Ahí están el perfil, la remuneración, los anexos y el cronograma. Si no cumples un requisito mínimo, te descalifican en la evaluación curricular.</p></div>
+  <div class="step"><h3>Arma tu expediente</h3><p>CV documentado, DNI, anexos firmados y declaraciones juradas. Ordénalo en el mismo orden que piden las bases y fóliate cada hoja si lo exigen.</p></div>
+  <div class="step"><h3>Postula a tiempo y sigue el cronograma</h3><p>Muchas entidades reciben postulaciones un solo día. Revisa los resultados de cada etapa en su web para no perder la entrevista.</p></div></div>
+  <section class="section"><div class="sec-head"><div><h2>Si buscas en el sector privado</h2></div></div>
+  <div class="steps"><div class="step"><h3>Un CV de una página</h3><p>Pon primero tu experiencia más reciente y logros con números. Adapta el CV a cada aviso.</p></div>
+  <div class="step"><h3>Activa alertas</h3><p>Computrabajo, Bumeran y LinkedIn te avisan cuando sale un empleo en tu región. Están enlazados en cada página de región.</p></div>
+  <div class="step"><h3>Desconfía de cobros</h3><p>Ninguna empresa seria cobra por entrevistarte, capacitarte o darte el puesto. Si te piden dinero, es estafa.</p></div></div></section>
+  <section class="section"><div class="sec-head"><div><h2>Preguntas frecuentes</h2></div></div><div class="faq">${FAQ.map(([q,a])=>`<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("")}</div></section>
+ </div>`;
+
+/* ---------- Detalle ---------- */
+function openJob(id){
+  const j = DB.jobs.find(x => x.id === id); if (!j) return;
+  const name = l => { try { const u = new URL(l); const f = decodeURIComponent(u.pathname.split("/").pop() || u.hostname); return /\.(pdf|docx?|xlsx?)$/i.test(f) ? f.replace(/[_]+/g," ") : u.hostname; } catch { return l; } };
+  const rows = [["Institución", INST[j.n]], ["Región", j.r], ["Sueldo", j.s ? soles(j.s) + " mensuales" : "Revisa las bases"], ["Cierre", `${fecha(j.f)} de ${j.f.slice(0,4)} (${days(j) === 0 ? "hoy" : "en " + days(j) + " días"})`], ["Tipo", TIPO[j.t]], ...(j.e ? [["Estudios", NIVEL[j.e]]] : []), ["Quiénes pueden postular", j.q], ...j.d.map(([h,b]) => [h || "Detalle", b])];
+  const wa = "https://wa.me/?text=" + encodeURIComponent(`Convocatoria: ${j.p} – ${INST[j.n]} (${j.r}). Cierra el ${fecha(j.f)}. ${j.l[0]}`);
+  const on = SAVED.has(keyOf(j));
+  const m = document.createElement("div"); m.className = "modal"; m.setAttribute("role","dialog"); m.setAttribute("aria-modal","true"); m.setAttribute("aria-label", j.p);
+  m.innerHTML = `<div class="sheet"><div class="sheet-h"><button class="x" data-close aria-label="Cerrar">✕</button><div style="display:flex;gap:12px;align-items:center;padding-right:40px">${avatar(j.n)}<span class="job-inst">${esc(INST[j.n])}</span></div><h2>${esc(j.p)}</h2><div style="display:flex;gap:6px;flex-wrap:wrap">${isNew(j) ? `<span class="pill p-new">Nuevo</span>` : ""}${pill(j)}<span class="pill p-sec">${esc(SECT[j.c][0])}</span></div></div>
+    <div class="sheet-b"><dl class="dl">${rows.map(([a,b]) => `<dt>${esc(a)}</dt><dd>${esc(b)}</dd>`).join("")}</dl>
+    <div class="acts"><a class="btn" href="${esc(j.l[0])}" target="_blank" rel="noopener">Ver convocatoria oficial ${ico("i-ext")}</a><button class="btn btn-ghost" data-star="${j.id}" aria-pressed="${on}">${ico("i-book")} ${on ? "Guardada" : "Guardar"}</button><a class="btn btn-wa" href="${wa}" target="_blank" rel="noopener">${ico("i-chat")} Compartir por WhatsApp</a><button class="btn btn-ghost" data-copy="${esc(j.l[0])}">${ico("i-copy")} Copiar enlace</button></div>
+    ${j.l.length > 1 ? `<div><b style="font-size:14px">Documentos y anexos</b><div class="docs" style="margin-top:6px">${j.l.slice(1).map(l => `<a href="${esc(l)}" target="_blank" rel="noopener">${ico("i-doc")}${esc(name(l))}</a>`).join("")}</div></div>` : ""}
+    <p class="note">Enlace probado en la última actualización (${DB ? fecha(DB.gen) : ""}). Algunas webs del Estado piden una verificación de seguridad al abrirlas. Lee las bases completas antes de postular: ahí están los requisitos, anexos y el cronograma exacto.</p>
+    <button class="btn btn-line" data-region="${j.r}" data-close>Más trabajos en ${esc(j.r)}</button></div></div>`;
+  document.body.appendChild(m); m.querySelector(".x").focus();
+}
+
+/* ---------- Portada: fotos que rotan ---------- */
+let slideI = 0, slideT = null;
+function showSlide(i){
+  const s = document.querySelectorAll("[data-slide]"); if (!s.length) return;
+  slideI = (i + SLIDES.length) % SLIDES.length;
+  s.forEach((el, k) => { el.classList.toggle("on", k === slideI); if (k === slideI) el.querySelector("img").loading = "eager"; });
+  document.querySelectorAll("[data-dot]").forEach((d, k) => d.setAttribute("aria-current", k === slideI));
+  $("#slideCap").innerHTML = slideCap(slideI); $("#heroCredit").innerHTML = credit(SLIDES[slideI][0]);
+}
+function startSlides(){
+  clearInterval(slideT);
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches || !$("[data-slide]")) return;
+  slideT = setInterval(() => document.hidden || showSlide(slideI + 1), 6500);
+}
+
+/* ---------- Navegación ---------- */
+const CATS = ["becas","vivienda","cursos","programas","practicas"];
+let current = "inicio", lastOpts = {};
+function go(view, opts = {}, push = true){
+  const reg = BYSLUG[view];
+  current = view; lastOpts = opts;
+  if (view === "empleos") LIST = {...BLANK(), ...Object.fromEntries(Object.entries(opts).filter(([,v]) => v != null))};
+  const html = reg ? regionView(reg) : V[view] ? V[view]() : CATS.includes(view) ? catView(view) : V.inicio();
+  $("#app").innerHTML = html;
+  bindFilters(); renderList(); startSlides();
+  const navKey = reg ? "regiones" : view;
+  document.querySelectorAll("#nav button").forEach(b => b.dataset.go === navKey ? b.setAttribute("aria-current","page") : b.removeAttribute("aria-current"));
+  if (push) { try { history.replaceState(null, "", "#" + view); } catch {} window.scrollTo({top:0}); }
+  const hf = $("#heroFind"); if (hf) hf.addEventListener("submit", e => { e.preventDefault(); go("empleos", {q:$("#hq").value, r:$("#hr").value, n:$("#hn").value}); });
+}
+function refreshStars(){
+  document.querySelectorAll("[data-star]").forEach(b => { const j = DB.jobs[+b.dataset.star]; const on = SAVED.has(keyOf(j)); b.setAttribute("aria-pressed", on); if (b.classList.contains("btn")) b.innerHTML = `${ico("i-book")} ${on ? "Guardada" : "Guardar"}`; else b.setAttribute("aria-label", on ? "Quitar de guardados" : "Guardar convocatoria"); });
+}
+document.addEventListener("click", e => {
+  const t = e.target;
+  const st = t.closest("[data-star]"); if (st) { const j = DB.jobs[+st.dataset.star], k = keyOf(j); SAVED.has(k) ? SAVED.delete(k) : SAVED.add(k); persist(); refreshStars(); toast(SAVED.has(k) ? "Guardada en este navegador" : "Quitada de guardados"); if (current === "guardados" && !t.closest(".modal")) go("guardados", {}, false); return; }
+  const close = t.closest("[data-close]"); const modal = t.closest(".modal");
+  if (modal && (t === modal || close)) { modal.remove(); if (!t.closest("[data-region]")) return; }
+  const cp = t.closest("[data-copy]"); if (cp) { navigator.clipboard?.writeText(cp.dataset.copy).then(() => toast("Enlace copiado"), () => toast("No se pudo copiar; mantén presionado el botón Ver convocatoria")); return; }
+  const job = t.closest("[data-job]"); if (job) { openJob(+job.dataset.job); return; }
+  const rg = t.closest("[data-region]"); if (rg) { go(slug(rg.dataset.region)); return; }
+  const dot = t.closest("[data-dot]"); if (dot) { showSlide(+dot.dataset.dot); startSlides(); return; }
+  const day = t.closest("[data-day]"); if (day) { go("empleos", {day: day.dataset.day}); return; }
+  if (t.closest("[data-clearday]")) { LIST.day = ""; renderList(); return; }
+  const post = t.closest("[data-post]"); if (post) { const id = post.dataset.post; go(CAT_OF(id)); requestAnimationFrame(() => document.getElementById("post-" + id)?.scrollIntoView({behavior:"smooth", block:"start"})); return; }
+  const ins = t.closest("[data-inst]"); if (ins) { LIST.q = INST[+ins.dataset.inst]; LIST.shown = 24; const f = $("#fq"); if (f) { f.value = LIST.q; renderList(); f.scrollIntoView({behavior:"smooth", block:"center"}); } return; }
+  const sb = t.closest("[data-sec]"); if (sb) { LIST.c = sb.dataset.sec; LIST.shown = 24; const f = $("#fc"); if (f) { f.value = LIST.c; renderList(); f.scrollIntoView({behavior:"smooth", block:"center"}); } return; }
+  const q = t.closest("[data-q]"); if (q) { go("empleos", {q:q.dataset.q}); return; }
+  if (t.closest("[data-more]")) { LIST.shown += 24; renderList(); return; }
+  if (t.closest("[data-reset]")) { const keepR = BYSLUG[current] ? LIST.r : ""; if (current === "empleos") go("empleos", {}, false); else { LIST = {...BLANK(), r: keepR, t: current === "practicas" ? "practicas" : ""}; ["fq","fc","fe","fn"].forEach(id => { const el = $("#"+id); if (el) el.value = ""; }); renderList(); } return; }
+  if (t.closest("#totop")) { window.scrollTo({top:0, behavior:"smooth"}); return; }
+  const g = t.closest("[data-go]"); if (g) { go(g.dataset.go, {e:g.dataset.e, c:g.dataset.c, n:g.dataset.n, sort:g.dataset.sort}); return; }
+});
+window.addEventListener("hashchange", () => { const h = location.hash.slice(1); if (h && h !== current && (BYSLUG[h] || V[h] || CATS.includes(h))) go(h); });
+window.addEventListener("scroll", () => { $("#totop").hidden = scrollY < 900; }, {passive:true});
+document.addEventListener("keydown", e => { if (e.key === "Escape") document.querySelector(".modal")?.remove(); });
+$("#topSearch").addEventListener("submit", e => { e.preventDefault(); go("empleos", {q:$("#tq").value}); });
+let tt; function toast(m){ const el = $("#toast"); el.textContent = m; el.classList.add("show"); clearTimeout(tt); tt = setTimeout(() => el.classList.remove("show"), 2200); }
+
+function ticker(){
+  const items = [["Cursos UNI","Matrícula gratis hasta el 26 de octubre","cursos"],["Beca 18-2027","Examen de preselección el 22 de noviembre","becas"],["Techo Propio","Ahora también para personas solteras","vivienda"],["Buen Pagador","Bono de hasta S/ 27 800 en 2026","vivienda"],["Alerta","El bono de S/ 3 000 que circula en redes es falso","programas"]];
+  if (DB) { const L = live(); items.unshift(["Hoy", `${nf(L.filter(j=>days(j)===0).length)} convocatorias cierran hoy`, "empleos"]); const nw = L.filter(isNew).length; if (nw) items.unshift(["Nuevas", `${nf(nw)} convocatorias publicadas desde ayer`, "empleos"]); }
+  const html = items.map(([a,b,g]) => `<button data-go="${g}"${a==="Hoy"?' data-e="hoy"':a==="Nuevas"?' data-e="nuevas"':""}><b>${esc(a)}:</b> ${esc(b)}</button>`).join("");
+  $("#ticker").innerHTML = html + html.replace(/<button/g, '<button tabindex="-1" aria-hidden="true"');
+}
+
+$("#credits").innerHTML = Object.entries(PHOTOS).map(([k,[,a,l,u]]) => `<li><a href="${u}" target="_blank" rel="noopener">${esc(k.startsWith("x-") ? "Foto de portada" : k)}</a>: ${esc(a)} · ${esc(l)}</li>`).join("");
+persist(); ticker();
+const start = (location.hash || "").slice(1);
+go(start && (BYSLUG[start] || V[start] || CATS.includes(start)) ? start : "inicio", {}, false);
+fetch("data.json").then(r => r.json()).then(d => {
+  INST = d.inst; LOGO = d.logo || [];
+  d.jobs.forEach((j,i) => { j.id = i; j._s = fold([j.p, INST[j.n], j.r, j.q, SECT[j.c][0]].join(" ")); });
+  NEWFROM = d.gen;
+  DB = d;
+  $("#genTxt").textContent = `Actualizado el ${fecha(d.gen)} de ${d.gen.slice(0,4)}`;
+  ticker(); go(current, lastOpts, false);
+}).catch(() => { $("#app").insertAdjacentHTML("afterbegin", `<div class="wrap" style="padding-top:16px"><div class="empty">No se pudo cargar la lista de convocatorias. Recarga la página.</div></div>`); });
+</script>

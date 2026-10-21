@@ -1,0 +1,8 @@
+# Se generan en cada actualización
+site/data.json
+site/logos/
+site/index.html
+site/chamba-peru.html
+work/*
+!work/seen.json
+!work/logos.json
