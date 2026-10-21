@@ -7,7 +7,7 @@ export PYTHONIOENCODING=utf-8
 PY="${PY:-py -P}"   # en GitHub Actions: PY="python3 -P"
 mkdir -p "$W/dl" "$W/logos_raw" "$ROOT/site/logos"
 echo "== 1/6 Descargando convocatorias de El Paisano"
-curl -sfL --max-time 120 "https://elpaisano.pe/wp-content/uploads/json-jobs/jobs.json?v=$(date +%s)" -o "$W/dl/jobs.new.json"
+curl -sfL --retry 4 --retry-delay 15 --retry-all-errors --connect-timeout 20 --max-time 300 -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/130" "https://elpaisano.pe/wp-content/uploads/json-jobs/jobs.json?v=$(date +%s)" -o "$W/dl/jobs.new.json"
 $PY -c "import json,sys;d=json.load(open(sys.argv[1],encoding='utf-8'));assert isinstance(d,list) and len(d)>500,len(d);print(len(d),'registros')" "$W/dl/jobs.new.json"
 mv "$W/dl/jobs.new.json" "$W/dl/jobs.json"
 echo "== 2/6 Listando enlaces"; $PY "$T/urls.py" "$ROOT"
