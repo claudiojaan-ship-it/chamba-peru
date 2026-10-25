@@ -10,6 +10,12 @@ m=collections.defaultdict(collections.Counter)
 for j in d:
     if (j.get('Fecha Máxima') or '')<'2026-01-01': continue
     m[re.sub(r'\s+',' ',j['Institución']).strip().upper()][(j.get('Logo de convocatoria') or '').strip()]+=1
+# Empresas de Empleos Perú (bolsa del MTPE): usan el logo que subieron a la plataforma
+if os.path.exists(W+'/dl/empleosperu.json'):
+    for j in json.load(open(W+'/dl/empleosperu.json',encoding='utf-8')):
+        lg=j.get('companyLogo') or {}; nm=re.sub(r'\s+',' ',j.get('companyName') or '').strip().upper()
+        if nm and lg.get('url') and 'plataforma empleos peru' not in (lg.get('displayName') or '').lower() and nm not in m:
+            m[nm][ "https://mtpe-candidatos.empleosperu.gob.pe/api/attachments"+lg['url'] ]+=1
 res={}; miss=[]
 for inst,c in m.items():
     url=over.get(inst) or c.most_common(1)[0][0]

@@ -209,7 +209,8 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .star[aria-pressed="true"] .ico{fill:currentColor}
 
 /* Filtros */
-.filters{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px;display:grid;grid-template-columns:2fr repeat(5,1fr);gap:8px}
+.filters{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.filters input{grid-column:1/-1}
 .filters input,.filters select{border:1px solid var(--line);border-radius:6px;padding:10px 11px;background:#fff;min-width:0}
 @media (max-width:1000px){.filters{grid-template-columns:repeat(3,minmax(0,1fr))}.filters input{grid-column:1/-1}}
 @media (max-width:620px){.filters{grid-template-columns:1fr 1fr}}
@@ -250,7 +251,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .s-open{background:var(--green-soft);color:#14663A}.s-soon{background:var(--orange-soft);color:#8A4A00}.s-closed{background:#EEF0F2;color:#4A525B}.s-alert{background:var(--red-soft);color:var(--red-dark)}
 .post .ph .t-intl{left:auto;right:10px;background:#1B1F24}
 .post .next{display:flex;gap:6px;align-items:flex-start;color:#8A4A00;background:var(--orange-soft);border-radius:6px;padding:6px 9px;font-size:12.5px}
-.t-empleo{background:#37474F}.t-emprende{background:#AD1457}
+.t-empleo{background:#37474F}.t-mineria{background:#7A4E1F}.post .ph .t-new{left:auto;right:10px;top:auto;bottom:10px;background:var(--gold);color:#3A2B00}.t-emprende{background:#AD1457}
 .newslist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 @media (max-width:760px){.newslist{grid-template-columns:minmax(0,1fr)}}
 .nw{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 13px;text-decoration:none;color:var(--ink);min-width:0}
@@ -482,12 +483,13 @@ const BYSLUG = Object.fromEntries(REGS.map(r => [slug(r), r]));
 const SECT = {salud:["Salud","#C62828"],justicia:["Justicia y control","#37474F"],nacional:["Entidades nacionales","#1D5FA8"],regional:["Gobierno regional","#0E7C86"],municipal:["Municipalidades","#C96A00"],educacion:["Educación (UGEL / DRE)","#6739B0"],universidad:["Universidades","#2E7D32"],agro:["Agro y ambiente","#7A5A1E"],privado:["Empresas privadas","#AD1457"]};
 const TIPO = {estado:"Estado (CAS y otros)",practicas:"Prácticas",privado:"Sector privado"};
 const NIVEL = {s:"Secundaria completa",t:"Técnico",u:"Universitario",e:"Estudiante o practicante"};
+const CARR = {mineria:"Minería",enfermeria:"Enfermería",salud:"Salud (médicos, obstetras, laboratorio)",ingenieria:"Ingeniería",derecho:"Derecho",contabilidad:"Contabilidad y finanzas",educacion:"Educación",sistemas:"Sistemas y TI",administracion:"Administración y RR. HH.",ventas:"Ventas y atención al cliente",conductores:"Choferes y operadores",seguridad:"Seguridad",construccion:"Construcción y oficios",agro:"Agro y veterinaria",gastronomia:"Cocina y restaurantes",limpieza:"Limpieza y mantenimiento"};
 const SLIDES = [["x-cursos","Lima"],["Arequipa","Arequipa"],["Cusco","Cusco"],["Áncash","Áncash"],["Puno","Puno"],["La Libertad","La Libertad"],["Loreto","Loreto"]];
 
 /* ---------- Programas gratuitos y noticias: vienen de programas.json (se actualiza solo) ---------- */
 let POSTS = [], NEWS = [];
 const P = id => POSTS.find(p => p.id === id);
-const PCAT = {becas:"Beca",cursos:"Curso gratis",vivienda:"Vivienda",programas:"Programa social",practicas:"Prácticas",empleo:"Empleo",emprende:"Emprende"};
+const PCAT = {mineria:"Minería",becas:"Beca",cursos:"Curso gratis",vivienda:"Vivienda",programas:"Programa social",practicas:"Prácticas",empleo:"Empleo",emprende:"Emprende"};
 const PARA = {est:"Estudiantes",jov:"Jóvenes",trab:"Trabajadores y desempleados",emp:"Emprendedores",fam:"Familias",may:"Adultos mayores y discapacidad"};
 const VIEW_OF = cat => ({becas:"becas",cursos:"cursos",vivienda:"vivienda",programas:"programas",empleo:"programas",practicas:"practicas",emprende:"gratis"})[cat] || "gratis";
 const CAT_OF = id => VIEW_OF(P(id)?.cat);
@@ -519,7 +521,7 @@ const days = j => Math.round((pd(j.f) - TODAY) / 864e5);
 const isNew = j => j.v >= NEWFROM;
 const live = () => DB ? DB.jobs.filter(j => days(j) >= 0) : [];
 const photo = k => PHOTOS[k] ? PHOTOS[k][0] : "";
-function pill(j){ const d = days(j); return d === 0 ? `<span class="pill p-today">Cierra hoy</span>` : d <= 7 ? `<span class="pill p-week">Cierra en ${d} día${d>1?"s":""}</span>` : `<span class="pill p-open">Vigente</span>`; }
+function pill(j){ if (j.o === "ep") return `<span class="pill p-open">Publicado el ${fecha(j.pub)}</span>`; const d = days(j); return d === 0 ? `<span class="pill p-today">Cierra hoy</span>` : d <= 7 ? `<span class="pill p-week">Cierra en ${d} día${d>1?"s":""}</span>` : `<span class="pill p-open">Vigente</span>`; }
 function avatar(n){
   const name = INST[n] || "";
   if (LOGO[n]) return `<span class="av lg"><img src="${LOGO[n]}" alt="Logo de ${esc(name)}" loading="lazy"></span>`;
@@ -542,12 +544,13 @@ function jobCard(j){
     <div class="job-top">${avatar(j.n)}<div style="min-width:0;display:grid;gap:3px"><div class="job-inst">${esc(INST[j.n])}</div><h3>${esc(j.p)}</h3></div></div>
     <p>${esc(j.q)}</p>
     <div style="display:flex;gap:6px;flex-wrap:wrap">${isNew(j) ? `<span class="pill p-new">Nuevo</span>` : ""}${pill(j)}<span class="pill p-sec">${esc(SECT[j.c][0])}</span></div>
-    <div class="job-meta">${j.s ? `<span class="sal num">${soles(j.s)}</span>` : `<span>Sueldo en bases</span>`}<span>${ico("i-pin")}${esc(j.r)}</span><span class="num">${ico("i-cal")}Hasta ${fecha(j.f)}</span></div>
+    <div class="job-meta">${j.s ? `<span class="sal num">${soles(j.s)}</span>` : `<span>Sueldo en bases</span>`}<span>${ico("i-pin")}${esc(j.r)}</span><span class="num">${ico("i-cal")}${j.o === "ep" ? "Empleos Perú" : "Hasta " + fecha(j.f)}</span></div>
   </article>`;
 }
 /* Estado de un programa según sus fechas: se recalcula cada día en el navegador */
 function pstate(p){
   if (p.estado === "alerta") return {k:"alert", t:"Alerta", r:0};
+  if (p.estado === "nuevo") return {k:"open", t:`Nuevo · publicado el ${fecha(p.pub)}`, r:1, d:p.vence};
   if (p.estado === "fechas") {
     const a = p.abre ? pd(p.abre) : null, c = p.cierra ? pd(p.cierra) : null, dc = c ? Math.round((c - TODAY) / 864e5) : 999;
     if (c && dc < 0) return {k:"closed", t:`Cerró el ${fecha(p.cierra)}`, r:6};
@@ -560,10 +563,10 @@ function pstate(p){
 }
 const STCLS = {open:"s-open",perm:"s-open",soon:"s-soon",annual:"s-soon",none:"s-closed",closed:"s-closed",alert:"s-alert"};
 const byState = (a,b) => { const x = pstate(a), y = pstate(b); return x.r - y.r || (x.d||"").localeCompare(y.d||""); };
-const usable = () => POSTS.filter(p => p.ok !== false);
+const usable = () => POSTS.filter(p => p.ok !== false && !(p.auto && p.vence && pd(p.vence) < TODAY));
 function postCard(p){
   const s = pstate(p);
-  return `<article class="post" id="post-${p.id}"><div class="ph"><img src="${photo(p.img)}" alt="" loading="lazy"><span class="tag t-${p.cat}">${PCAT[p.cat] || "Programa"}</span>${p.ambito === "intl" ? `<span class="tag t-intl">Extranjero</span>` : ""}</div>
+  return `<article class="post" id="post-${p.id}"><div class="ph"><img src="${photo(p.img)}" alt="" loading="lazy"><span class="tag t-${p.cat}">${PCAT[p.cat] || "Programa"}</span>${p.auto ? `<span class="tag t-new">Nuevo</span>` : ""}${p.ambito === "intl" ? `<span class="tag t-intl">Extranjero</span>` : ""}</div>
     <div class="bd"><span class="state ${STCLS[s.k]}">${esc(s.t)}</span><h3>${esc(p.title)}</h3><div class="job-inst">${esc(p.inst)}</div><p>${esc(p.desc)}</p>
     ${(s.k === "closed" || s.k === "annual" || s.k === "none") && p.proximo ? `<p class="next">${ico("i-cal")} ${esc(p.proximo)}</p>` : ""}
     ${p.facts.length ? `<ul class="facts">${p.facts.map(f=>`<li>${esc(f)}</li>`).join("")}</ul>` : ""}
@@ -578,11 +581,11 @@ const credit = k => PHOTOS[k] ? `<a class="credit" href="${PHOTOS[k][3]}" target
 const skel = n => `<div class="jobs">${Array.from({length:n},()=>`<div class="skel"></div>`).join("")}</div>`;
 
 /* ---------- Lista filtrable ---------- */
-const BLANK = () => ({q:"", r:"", t:"", c:"", n:"", e:"", day:"", sort:"cierre", shown:24});
+const BLANK = () => ({q:"", r:"", t:"", c:"", n:"", k:"", e:"", day:"", sort:"cierre", shown:24});
 let LIST = BLANK();
 function filtered(){
   const q = fold(LIST.q).split(/\s+/).filter(Boolean);
-  let L = live().filter(j => (!LIST.r || j.r === LIST.r) && (!LIST.t || j.t === LIST.t) && (!LIST.c || j.c === LIST.c) && (!LIST.n || j.e === LIST.n)
+  let L = live().filter(j => (!LIST.r || j.r === LIST.r) && (!LIST.t || j.t === LIST.t) && (!LIST.c || j.c === LIST.c) && (!LIST.n || j.e === LIST.n) && (!LIST.k || (j.k||[]).includes(LIST.k))
     && (!LIST.day || j.f === LIST.day)
     && (!LIST.e || (LIST.e === "semana" ? days(j) <= 7 : LIST.e === "hoy" ? days(j) === 0 : LIST.e === "nuevas" ? isNew(j) : LIST.e === "sueldo" ? j.s > 0 : true))
     && (!q.length || q.every(w => j._s.includes(w))));
@@ -598,6 +601,7 @@ function filtersHTML(withRegion){
     <input id="fq" type="search" value="${esc(LIST.q)}" placeholder="Puesto, institución, carrera o ciudad" aria-label="Buscar">
     ${withRegion ? `<select id="fr" aria-label="Región">${o("","Todas las regiones",LIST.r)}${REGS.map(r=>o(r,r,LIST.r)).join("")}</select>` : ""}
     <select id="ft" aria-label="Tipo">${o("","Todo tipo de empleo",LIST.t)}${Object.entries(TIPO).map(([k,v])=>o(k,v,LIST.t)).join("")}</select>
+    <select id="fk" aria-label="Carrera">${o("","Todas las carreras y oficios",LIST.k)}${Object.entries(CARR).map(([k,v])=>o(k,v,LIST.k)).join("")}</select>
     <select id="fn" aria-label="Estudios">${o("","Cualquier nivel de estudios",LIST.n)}${Object.entries(NIVEL).map(([k,v])=>o(k,v,LIST.n)).join("")}</select>
     <select id="fc" aria-label="Sector">${o("","Todos los sectores",LIST.c)}${Object.entries(SECT).map(([k,v])=>o(k,v[0],LIST.c)).join("")}</select>
     <select id="fe" aria-label="Plazo">${o("","Cualquier plazo",LIST.e)}${o("nuevas","Nuevas",LIST.e)}${o("hoy","Cierran hoy",LIST.e)}${o("semana","Cierran esta semana",LIST.e)}${o("sueldo","Con sueldo publicado",LIST.e)}</select>
@@ -614,7 +618,7 @@ function renderList(){
 }
 function bindFilters(){
   const f = $("#flt"); if (!f) return;
-  const sync = () => { LIST.q = $("#fq").value; if ($("#fr")) LIST.r = $("#fr").value; LIST.t = $("#ft").value; LIST.n = $("#fn").value; LIST.c = $("#fc").value; LIST.e = $("#fe").value; LIST.sort = $("#fs").value; LIST.shown = 24; renderList(); };
+  const sync = () => { LIST.q = $("#fq").value; if ($("#fr")) LIST.r = $("#fr").value; LIST.t = $("#ft").value; LIST.n = $("#fn").value; LIST.k = $("#fk").value; LIST.c = $("#fc").value; LIST.e = $("#fe").value; LIST.sort = $("#fs").value; LIST.shown = 24; renderList(); };
   f.addEventListener("submit", e => { e.preventDefault(); sync(); });
   f.addEventListener("change", sync);
   let t; $("#fq").addEventListener("input", () => { clearTimeout(t); t = setTimeout(sync, 200); });
@@ -683,6 +687,8 @@ V.inicio = () => {
         <div class="chips"><button class="chip" data-go="vivienda">Vivienda y bonos</button><button class="chip" data-go="programas">Programas</button><button class="chip" data-go="empleos" data-n="s">Solo secundaria</button></div></div>${credit("x-hero")}</div>
     </section>
 
+    ${DB ? `<section class="section"><div class="sec-head"><div><h2>Busca por carrera u oficio</h2><p>Desde choferes y vendedores hasta enfermeras, ingenieros de minas y abogados.</p></div></div><div class="chips">${Object.entries(CARR).map(([k,v]) => `<button class="chip" data-go="empleos" data-k="${k}">${esc(v)} <small class="num">${nf(L.filter(j => (j.k||[]).includes(k)).length)}</small></button>`).join("")}</div></section>` : ""}
+    ${mineriaBlock(L)}
     <section class="section"><div class="sec-head"><div><h2>Mejor pagadas</h2></div><button class="linkbtn" data-go="empleos" data-sort="sueldo">Ordenar todas por sueldo →</button></div>
       ${DB ? `<div class="jobs">${top.map(jobCard).join("")}</div>` : skel(3)}</section>
 
@@ -691,6 +697,12 @@ V.inicio = () => {
       <div class="chips">${Object.entries(NIVEL).map(([k,v])=>`<button class="chip" data-go="empleos" data-n="${k}">${ico("i-cap")} ${esc(v)} ${DB ? `<small class="num">${nf(L.filter(j=>j.e===k).length)}</small>` : ""}</button>`).join("")}</div></div></section>
   </div>`;
 };
+function mineriaBlock(L){
+  const jobs = L.filter(j => (j.k||[]).includes("mineria")).sort((a,b) => b.s - a.s).slice(0, 3);
+  const nw = NEWS.filter(n => n.cat === "mineria").slice(0, 4);
+  if (!jobs.length && !nw.length) return "";
+  return `<section class="section"><div class="sec-head"><div><h2>Minería: empleos y prácticas</h2><p>Convocatorias de las mineras y empleos del sector. Las noticias vienen de Rumbo Minero y se actualizan solas.</p></div><button class="linkbtn" data-go="empleos" data-k="mineria">Ver empleos de minería →</button></div>${nw.length ? newsList(nw) : ""}${jobs.length ? `<div class="jobs" style="margin-top:14px">${jobs.map(jobCard).join("")}</div>` : ""}</section>`;
+}
 V.empleos = () => `<section class="banner"><img class="bg" src="${photo("x-vivienda")}" alt=""><div class="wrap"><span class="crumbs"><button data-go="inicio">Portada</button> › Empleos</span><h1>Convocatorias de trabajo 2026</h1><p>CAS del Estado, prácticas y empleos privados en todo el Perú. Filtra por región, estudios, sector y plazo, y entra a la convocatoria oficial.</p></div>${credit("x-vivienda")}</section>
   <div class="wrap page">${DB ? filtersHTML(true) : skel(6)}</div>`;
 V.guardados = () => {
@@ -813,7 +825,7 @@ V.guias = () => `<section class="banner"><img class="bg" src="${photo("Lima")}" 
 function openJob(id){
   const j = DB.jobs.find(x => x.id === id); if (!j) return;
   const name = l => { try { const u = new URL(l); const f = decodeURIComponent(u.pathname.split("/").pop() || u.hostname); return /\.(pdf|docx?|xlsx?)$/i.test(f) ? f.replace(/[_]+/g," ") : u.hostname; } catch { return l; } };
-  const rows = [["Institución", INST[j.n]], ["Región", j.r], ["Sueldo", j.s ? soles(j.s) + " mensuales" : "Revisa las bases"], ["Cierre", `${fecha(j.f)} de ${j.f.slice(0,4)} (${days(j) === 0 ? "hoy" : "en " + days(j) + " días"})`], ["Tipo", TIPO[j.t]], ...(j.e ? [["Estudios", NIVEL[j.e]]] : []), ["Quiénes pueden postular", j.q], ...j.d.map(([h,b]) => [h || "Detalle", b])];
+  const rows = [["Institución", INST[j.n]], ["Región", j.r], ["Sueldo", j.s ? soles(j.s) + " mensuales" : "Revisa las bases"], (j.o === "ep" ? ["Publicado", `${fecha(j.pub)} en Empleos Perú (la bolsa del Ministerio de Trabajo no publica fecha de cierre; postula pronto)`] : ["Cierre", `${fecha(j.f)} de ${j.f.slice(0,4)} (${days(j) === 0 ? "hoy" : "en " + days(j) + " días"})`]), ...((j.k||[]).length ? [["Carrera", j.k.map(k => CARR[k]).join(", ")]] : []), ["Tipo", TIPO[j.t]], ...(j.e ? [["Estudios", NIVEL[j.e]]] : []), ["Quiénes pueden postular", j.q], ...j.d.map(([h,b]) => [h || "Detalle", b])];
   const wa = "https://wa.me/?text=" + encodeURIComponent(`Convocatoria: ${j.p} – ${INST[j.n]} (${j.r}). Cierra el ${fecha(j.f)}. ${j.l[0]}`);
   const on = SAVED.has(keyOf(j));
   const m = document.createElement("div"); m.className = "modal"; m.setAttribute("role","dialog"); m.setAttribute("aria-modal","true"); m.setAttribute("aria-label", j.p);
@@ -877,7 +889,7 @@ document.addEventListener("click", e => {
   if (t.closest("[data-more]")) { LIST.shown += 24; renderList(); return; }
   if (t.closest("[data-reset]")) { const keepR = BYSLUG[current] ? LIST.r : ""; if (current === "empleos") go("empleos", {}, false); else { LIST = {...BLANK(), r: keepR, t: current === "practicas" ? "practicas" : ""}; ["fq","fc","fe","fn"].forEach(id => { const el = $("#"+id); if (el) el.value = ""; }); renderList(); } return; }
   if (t.closest("#totop")) { window.scrollTo({top:0, behavior:"smooth"}); return; }
-  const g = t.closest("[data-go]"); if (g) { go(g.dataset.go, {e:g.dataset.e, c:g.dataset.c, n:g.dataset.n, sort:g.dataset.sort}); return; }
+  const g = t.closest("[data-go]"); if (g) { go(g.dataset.go, {e:g.dataset.e, c:g.dataset.c, n:g.dataset.n, k:g.dataset.k, sort:g.dataset.sort}); return; }
 });
 window.addEventListener("hashchange", () => { const h = location.hash.slice(1); if (h && h !== current && (BYSLUG[h] || V[h] || CATS.includes(h))) go(h); });
 window.addEventListener("scroll", () => { $("#totop").hidden = scrollY < 900; }, {passive:true});

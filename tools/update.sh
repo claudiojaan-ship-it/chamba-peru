@@ -10,6 +10,7 @@ echo "== 1/7 Descargando convocatorias de El Paisano"
 curl -sfL --retry 4 --retry-delay 15 --retry-all-errors --connect-timeout 20 --max-time 300 -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/130" "https://elpaisano.pe/wp-content/uploads/json-jobs/jobs.json?v=$(date +%s)" -o "$W/dl/jobs.new.json"
 $PY -c "import json,sys;d=json.load(open(sys.argv[1],encoding='utf-8'));assert isinstance(d,list) and len(d)>500,len(d);print(len(d),'registros')" "$W/dl/jobs.new.json"
 mv "$W/dl/jobs.new.json" "$W/dl/jobs.json"
+echo "== 1b Empleos Perú (Ministerio de Trabajo)"; $PY "$T/empleosperu.py" "$ROOT" || echo "Empleos Perú no respondió; se sigue sin esos avisos"
 echo "== 2/7 Listando enlaces"; $PY "$T/urls.py" "$ROOT"
 echo "== 3/7 Verificando enlaces"
 timeout 1200 xargs -d '\n' -P 32 -n 1 bash "$T/chk.sh" < "$W/urls.txt" > "$W/status.tsv" 2>/dev/null || true
