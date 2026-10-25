@@ -21,5 +21,15 @@ while off<total and off<5000:
     d=page(off)
     if not d or not d.get('data'): break
     jobs+=d['data']; off+=len(d['data'])
-json.dump(jobs,open(OUT,'w',encoding='utf-8'),ensure_ascii=False)
+def corto(j):   # solo los campos que usa la página, para que el archivo pese poco en GitHub
+    lg=j.get('companyLogo') or {}; pk=(j.get('offeredRemunerationPackages') or [{}])[0] or {}
+    return {'id':j['id'],'positionTitle':j.get('positionTitle'),'location':{'DEPARTMENT':(j.get('location') or {}).get('DEPARTMENT')},
+        'companyName':j.get('companyName'),'companyDescription':(j.get('companyDescription') or '')[:320],
+        'confidentialFields':['DESCRIPTION'] if 'DESCRIPTION' in (j.get('confidentialFields') or []) else [],
+        'contractType':{'name':(j.get('contractType') or {}).get('name')},'hoursPerWeek':{'name':(j.get('hoursPerWeek') or {}).get('name')},
+        'educationDegree':{'name':(j.get('educationDegree') or {}).get('name')},'displaySalary':j.get('displaySalary'),
+        'offeredRemunerationPackages':[{'minimumAmount':pk.get('minimumAmount'),'maximumAmount':pk.get('maximumAmount')}],
+        'datePosted':j.get('datePosted'),'active':j.get('active',True),
+        'companyLogo':{'url':lg.get('url'),'displayName':lg.get('displayName')} if lg.get('url') else None}
+json.dump([corto(j) for j in jobs],open(OUT,'w',encoding='utf-8'),ensure_ascii=False,separators=(',',':'))
 print(f"empleosperu={len(jobs)} de {total}")
