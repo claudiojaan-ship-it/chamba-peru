@@ -43,7 +43,7 @@ news=[n for r in res for n in r]
 for c in (6,10):   # El Paisano: educación y Perú
     try:
         for p in json.loads(curl(f"https://elpaisano.pe/wp-json/wp/v2/posts?categories={c}&per_page=20&_fields=date,title,link")):
-            news.append(dict(t=html.unescape(re.sub('<[^>]+>','',p['title']['rendered'])).strip(),u=p['link'],d=p['date'][:10],src="El Paisano"))
+            news.append(dict(t=html.unescape(re.sub('<[^>]+>','',p['title']['rendered'])).strip(),u=p['link'],d=p["date"][:10],src="Prensa"))
     except (ValueError,KeyError,TypeError): pass
 def tema(t):
     t=t.lower()

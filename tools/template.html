@@ -440,7 +440,7 @@ thead th{border-top:0;background:var(--soft);font-size:12px;text-transform:upper
     </div>
   </div>
   <div class="wrap foot-b">
-    <div>© 2026 Chamba Perú · <span id="genTxt">Actualización diaria</span>. Recopilación de convocatorias: <a href="https://elpaisano.pe/el-paisano-trabajos/" target="_blank" rel="noopener">El Paisano Trabajos</a> y portales oficiales; logos de cada institución. Cada enlace se prueba en cada actualización; algunas webs del Estado piden una verificación de seguridad al abrirlas.</div>
+    <div>© 2026 Chamba Perú · <span id="genTxt">Actualización diaria</span>. Convocatorias reunidas de portales públicos y privados; logos de cada institución. Cada enlace se prueba en cada actualización; algunas webs del Estado piden una verificación de seguridad al abrirlas.</div>
     <details><summary>Créditos de las fotografías (Wikimedia Commons)</summary><ul id="credits"></ul></details>
   </div>
 </footer>
@@ -663,7 +663,7 @@ V.inicio = () => {
         <article class="lead-story"><img src="${photo(lead.img)}" alt=""><div class="in"><span class="tag t-${lead.cat}" style="justify-self:start">${esc(pstate(lead).t)}</span><h3>${esc(lead.title)}</h3><p>${esc(lead.desc)}</p><div class="chips"><a class="btn" href="${esc(lead.url)}" target="_blank" rel="noopener">Ir a la fuente oficial ${ico("i-ext")}</a><button class="btn btn-ghost" data-go="${VIEW_OF(lead.cat)}">Ver más</button></div></div></article>
         <div class="side-news">${side.map(p => { const s = pstate(p); return `<button class="sn" data-post="${p.id}"><img src="${photo(p.img)}" alt="" loading="lazy"><div><span class="tag t-${s.k === "alert" ? "alert" : p.cat}" style="justify-self:start">${esc(s.t)}</span><h3>${esc(p.title)}</h3><span>${esc(p.inst)}</span></div></button>`; }).join("")}</div>
       </div>` : skel(2)}</section>
-    ${NEWS.length ? `<section class="section"><div class="sec-head"><div><h2>Noticias de hoy</h2><p>Becas, bonos, cursos y empleo publicados por el Estado y El Paisano. Se actualizan solas.</p></div><button class="linkbtn" data-go="gratis">Ver todos los programas gratis →</button></div>${newsList(NEWS.slice(0, 6))}</section>` : ""}
+    ${NEWS.length ? `<section class="section"><div class="sec-head"><div><h2>Noticias de hoy</h2><p>Becas, bonos, cursos y empleo publicados por el Estado y medios peruanos. Se actualizan solas.</p></div><button class="linkbtn" data-go="gratis">Ver todos los programas gratis →</button></div>${newsList(NEWS.slice(0, 6))}</section>` : ""}
 
     <section class="section"><div class="sec-head"><div><h2>Próximos cierres</h2><p>Toca un día para ver qué convocatorias vencen ese día.</p></div></div>
       ${DB ? `<div class="cal">${cal.map(([d,k,c],i)=>`<button class="day${i?"":" today"}" data-day="${k}"><small>${i ? DIA[d.getDay()] : "Hoy"}</small><b class="num">${d.getDate()}</b><span class="num">${c} convoc.</span><i><em style="width:${c/cmax*100}%"></em></i></button>`).join("")}</div>` : skel(1)}</section>
@@ -768,7 +768,7 @@ function catView(key){
 function newsList(L){ return `<div class="newslist">${L.map(n => `<a class="nw" href="${esc(n.u)}" target="_blank" rel="noopener"><span class="tag t-${n.cat}">${PCAT[n.cat] || "Noticia"}</span><b>${esc(n.t)}</b><small>${esc(n.src)} · ${fecha(n.d)}</small></a>`).join("")}</div>`; }
 function newsBlock(cats, title){
   const L = NEWS.filter(n => !cats || cats.includes(n.cat)).slice(0, 8);
-  return L.length ? `<section class="section"><div class="sec-head"><div><h2>${esc(title)}</h2><p>Se actualizan solas con lo último publicado en gob.pe y El Paisano.</p></div></div>${newsList(L)}</section>` : "";
+  return L.length ? `<section class="section"><div class="sec-head"><div><h2>${esc(title)}</h2><p>Se actualizan solas con lo último publicado en gob.pe y medios peruanos.</p></div></div>${newsList(L)}</section>` : "";
 }
 let PF = {para:"", amb:"", cat:"", open:false};
 V.gratis = () => {
