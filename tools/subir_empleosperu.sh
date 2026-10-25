@@ -10,7 +10,8 @@ export PYTHONIOENCODING=utf-8 GIT_TERMINAL_PROMPT=0
   git pull -q --rebase --autostash || echo "git pull falló"
   py -P tools/empleosperu.py . || { echo "descarga falló"; exit 0; }
   py -P tools/logos.py . --ep || echo "logos fallaron"
-  git add work/dl/empleosperu.json work/eplogos
+  py -P tools/programas.py . > /dev/null || echo "noticias fallaron"
+  git add work/dl/empleosperu.json work/eplogos work/dl/rumbominero.json
   if git diff --cached --quiet; then echo "sin cambios"; else
     git commit -qm "Empleos Perú: avisos del $(date +%Y-%m-%d)" && git push -q && echo "subido"
   fi

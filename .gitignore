@@ -9,4 +9,5 @@ work/*
 !work/dl/
 work/dl/*
 !work/dl/empleosperu.json
+!work/dl/rumbominero.json
 !work/eplogos/

@@ -3,7 +3,7 @@
 #  2. noticias recientes de becas, bonos, cursos y empleo (gob.pe por RSS oficial, prensa y Rumbo Minero),
 #  3. programas nuevos detectados automáticamente en esas noticias, que se borran solos al vencer.
 # Uso: py -P tools/programas.py <carpeta chamba-peru>
-import json,sys,re,html,subprocess,datetime,email.utils,urllib.parse
+import json,sys,re,html,subprocess,datetime,email.utils,urllib.parse,os
 import xml.etree.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor
 ROOT=sys.argv[1]; HOY=datetime.date.today()
@@ -44,6 +44,9 @@ def wp(url,src,mine=False):
     out=[]; body=curl(url)
     if not body.lstrip().startswith('['):   # a veces responde con una verificacion anti-robots: un reintento
         import time; time.sleep(8); body=subprocess.run(['curl','-sL','--max-time','30','-A','Mozilla/5.0 Chrome/130',url],capture_output=True).stdout.decode('utf-8','ignore')
+    cache=ROOT+'/work/dl/'+re.sub(r'\W+','',src.lower())+'.json'
+    if body.lstrip().startswith('['): open(cache,'w',encoding='utf-8').write(body)   # desde la PC queda guardado para la nube
+    elif os.path.exists(cache): body=open(cache,encoding='utf-8').read()              # la nube usa lo último que subió la PC
     try:
         for p in json.loads(body):
             raw=p.get('excerpt',{}).get('rendered','')+' '+p.get('content',{}).get('rendered','')[:6000]
