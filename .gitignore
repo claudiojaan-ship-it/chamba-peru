@@ -9,3 +9,4 @@ work/*
 !work/dl/
 work/dl/*
 !work/dl/empleosperu.json
+!work/eplogos/

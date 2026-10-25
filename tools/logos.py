@@ -1,5 +1,5 @@
 # Descarga y normaliza logos de instituciones (cache en work/logos_raw, salida en site/logos)
-import json,sys,os,re,hashlib,collections,unicodedata,urllib.request,io
+import json,sys,os,re,hashlib,collections,unicodedata,urllib.request,io,shutil
 from PIL import Image
 ROOT=sys.argv[1]; W=ROOT+'/work'; OUT=ROOT+'/site/logos'; os.makedirs(OUT,exist_ok=True); os.makedirs(W+'/logos_raw',exist_ok=True)
 H={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/130"}
@@ -16,21 +16,30 @@ if os.path.exists(W+'/dl/empleosperu.json'):
         lg=j.get('companyLogo') or {}; nm=re.sub(r'\s+',' ',j.get('companyName') or '').strip().upper()
         if nm and lg.get('url') and 'plataforma empleos peru' not in (lg.get('displayName') or '').lower() and nm not in m:
             m[nm][ "https://mtpe-candidatos.empleosperu.gob.pe/api/attachments"+lg['url'] ]+=1
+# Los logos de Empleos Perú solo se pueden bajar desde el Perú: la PC los guarda ya procesados en
+# work/eplogos (se sube a GitHub con --ep) y la nube solo los copia, sin intentar descargarlos.
+EP_DIR=W+'/eplogos'; CON_EP='--ep' in sys.argv; os.makedirs(EP_DIR,exist_ok=True)
 res={}; miss=[]
 for inst,c in m.items():
     url=over.get(inst) or c.most_common(1)[0][0]
     bad=not url or 'referencial' in url or ('MINISTERIO-DE-TRABAJO-Y-PROMOCION' in url and 'TRABAJO' not in inst)
     if bad and inst not in over: miss.append(inst); continue
+    fn=sl(inst)+'.jpg'
+    if 'empleosperu.gob.pe' in url:
+        if os.path.exists(EP_DIR+'/'+fn):
+            shutil.copyfile(EP_DIR+'/'+fn,OUT+'/'+fn); res[inst]='logos/'+fn; continue
+        if not CON_EP: miss.append(inst); continue
     raw=W+'/logos_raw/'+hashlib.sha1(url.encode()).hexdigest()
     try:
         if not os.path.exists(raw):
-            open(raw,'wb').write(urllib.request.urlopen(urllib.request.Request(url,headers=H),timeout=30).read())
+            open(raw,'wb').write(urllib.request.urlopen(urllib.request.Request(url,headers=H),timeout=20).read())
         im=Image.open(raw); im.load()
         if im.mode in ('P','LA','RGBA') or 'transparency' in im.info:
             im=im.convert('RGBA'); bg=Image.new('RGBA',im.size,(255,255,255,255)); bg.alpha_composite(im); im=bg
         im=im.convert('RGB'); im.thumbnail((160,160),Image.LANCZOS)
         cv=Image.new('RGB',(160,160),(255,255,255)); cv.paste(im,((160-im.width)//2,(160-im.height)//2))
-        fn=sl(inst)+'.jpg'; cv.save(OUT+'/'+fn,'JPEG',quality=84,optimize=True); res[inst]='logos/'+fn
+        cv.save(OUT+'/'+fn,'JPEG',quality=84,optimize=True); res[inst]='logos/'+fn
+        if 'empleosperu.gob.pe' in url: shutil.copyfile(OUT+'/'+fn,EP_DIR+'/'+fn)
     except Exception as e:
         miss.append(inst)
 json.dump(res,open(W+'/logos.json','w',encoding='utf-8'),ensure_ascii=False,indent=0)
