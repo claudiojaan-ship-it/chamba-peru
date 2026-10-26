@@ -128,6 +128,22 @@ for x in jobs:
     ks=[k for k,p in CARR if re.search(p,t)]
     if x['c'] in ('educacion','salud') and x['c'] not in ks and not ks: ks.append(x['c'])
     x['k']=ks[:3]
+
+# Grados que pide cada convocatoria, tal como aparecen en el texto (puede pedir varios)
+GRADOS=[('m',r'maestr|magister|doctorad'),
+ ('ti',r'titulad|licenciad|titulo (profesional|universitario)|colegiad|habilitad|universitaria - licenciado'),
+ ('b',r'bachiller'),
+ ('eg',r'egresad[oa]s? (universitari|de la carrera|de las carreras|de universidad)|universitaria completa|egresad[oa]s? en'),
+ ('t',r'tecnic[oa]s? (titulad|egresad|completa|en )|instituto|tecnica completa|carrera tecnica|estudios tecnicos|tecnico superior'),
+ ('e',r'estudiante|practicante|practicas (pre|profesional)|cursando|ultimos ciclos|universitaria estudiando|tecnica estudiando|universitaria incompleta'),
+ ('s',r'secundaria|primaria completa|sin estudios|sin experiencia')]
+for x in jobs:
+    t=a(' '.join([x['p'],x['q']]+[b for _,b in x.get('d',[])]))
+    g=[k for k,p in GRADOS if re.search(p,t)]
+    if not g and re.search(r'egresad',t): g=['eg']
+    if not g and x.get('e')=='u': g=['ti']
+    if not g and x.get('e'): g=[{'s':'s','t':'t','e':'e'}.get(x['e'],'ti')]
+    x['g']=g
 names=[None]*len(inst)
 for k,v in inst.items(): names[v]=k
 seen={k:v for k,v in seen.items() if (k.startswith('ep|') and v>=(datetime.date.fromisoformat(TODAY)-datetime.timedelta(days=45)).isoformat()) or (not k.startswith('ep|') and k.split('|')[3]>=TODAY)}
