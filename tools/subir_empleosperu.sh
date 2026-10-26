@@ -9,9 +9,10 @@ export PYTHONIOENCODING=utf-8 GIT_TERMINAL_PROMPT=0
   echo "== $(date '+%Y-%m-%d %H:%M')"
   git pull -q --rebase --autostash || echo "git pull falló"
   py -P tools/empleosperu.py . || { echo "descarga falló"; exit 0; }
+  py -P tools/mineras.py . || echo "mineras fallaron"
   py -P tools/logos.py . --ep || echo "logos fallaron"
   py -P tools/programas.py . > /dev/null || echo "noticias fallaron"
-  git add work/dl/empleosperu.json work/eplogos work/dl/rumbominero.json
+  git add work/dl/empleosperu.json work/eplogos work/dl/rumbominero.json work/dl/mineras.json work/dl/proactivo.json work/dl/energiminas.json
   if git diff --cached --quiet; then echo "sin cambios"; else
     git commit -qm "Empleos Perú: avisos del $(date +%Y-%m-%d)" && git push -q && echo "subido"
   fi

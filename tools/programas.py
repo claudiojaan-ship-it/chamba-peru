@@ -59,6 +59,9 @@ with ThreadPoolExecutor(8) as ex: res=list(ex.map(lambda x: rss_items(*x),urls))
 news=[n for r in res for n in r]
 for c in (6,10): news+=wp(f"https://elpaisano.pe/wp-json/wp/v2/posts?categories={c}&per_page=20&_fields=date,title,link,excerpt","Prensa")
 news+=wp("https://www.rumbominero.com/wp-json/wp/v2/posts?categories=15136&per_page=25&_fields=date,title,link,excerpt,content","Rumbo Minero",mine=True)
+news+=wp("https://energiminas.com/wp-json/wp/v2/posts?categories=49&search=convocatoria&per_page=15&_fields=date,title,link,excerpt,content","Energiminas",mine=True)
+for n in wp("https://proactivo.com.pe/wp-json/wp/v2/posts?categories=5846&per_page=25&_fields=date,title,link,excerpt,content","ProActivo"):
+    n['mine']=bool(re.search(r'miner|mina|antamina|southern|cerro verde|bambas|quellaveco|buenaventura|volcan|minsur|yanacocha',n['t'],re.I)); news.append(n)
 def tema(t):
     t=t.lower()
     if re.search(r'beca',t): return 'becas'

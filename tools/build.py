@@ -106,6 +106,22 @@ for j in (json.load(open(EPF,encoding='utf-8')) if os.path.exists(EPF) else []):
     jobs.append(dict(p=title,n=inst[nm],r=r,f=f,s=s if 300<=s<=40000 else 0,q=q[:260],l=[url],d=dd,t=t,c=sector({'Institución':'','Puesto':title,'¿Quiénes pueden Postular?':'','Enlace 1':''}) if t=='practicas' else 'privado',e=e,v=seen[key],pub=pub,o='ep'))
     ep+=1
 
+# Vacantes de portales oficiales de mineras (vigentes 30 días desde su publicación)
+MF=W+'/dl/mineras.json'; mn=0
+SEDE={'Antamina':'Áncash','Buenaventura':'Lima'}
+for j in (json.load(open(MF,encoding='utf-8')) if os.path.exists(MF) else []):
+    f=(datetime.date.fromisoformat(j['pub'])+datetime.timedelta(days=30)).isoformat()
+    if f<TODAY or j['u'] in links: continue
+    loc=re.search(r'\(\d{2} - ([^,]+), PE\)',j['t'])
+    r=next((v for v in DEP.values() if loc and a(v)==a(loc.group(1))), SEDE.get(j['emp'],'Lima'))
+    title=re.sub(r'\s*\((\d{2} - [^)]*|Peru)\)\s*$','',j['t']).strip()
+    nm=('COMPAÑÍA DE MINAS BUENAVENTURA' if j['emp']=='Buenaventura' else 'COMPAÑÍA MINERA ANTAMINA')
+    if nm not in inst: inst[nm]=len(inst)
+    key='mina|'+j['u']
+    if key not in seen: seen[key]=TODAY
+    jobs.append(dict(p=title,n=inst[nm],r=r,f=f,s=0,q=f"Vacante publicada en el portal oficial de empleo de {j['emp']}."[:260],l=[j['u']],d=[['Descripción',j['x'][:300]]] if j.get('x') else [],t='privado',c='privado',e='',v=seen[key],pub=j['pub'],o='mina',km=1))
+    mn+=1
+
 # Carreras: etiquetas para filtrar por profesión u oficio
 CARR=[('mineria',r'miner|\bmina\b|geolog|metalurg|perforac|voladur|chancad|concentrador|planta concentradora|relaves'),
  ('enfermeria',r'enfermer'),
@@ -126,6 +142,7 @@ CARR=[('mineria',r'miner|\bmina\b|geolog|metalurg|perforac|voladur|chancad|conce
 for x in jobs:
     t=a(x['p']+' '+x['q'])
     ks=[k for k,p in CARR if re.search(p,t)]
+    if x.pop('km',0) and 'mineria' not in ks: ks.insert(0,'mineria')
     if x['c'] in ('educacion','salud') and x['c'] not in ks and not ks: ks.append(x['c'])
     x['k']=ks[:3]
 
@@ -146,8 +163,8 @@ for x in jobs:
     x['g']=g
 names=[None]*len(inst)
 for k,v in inst.items(): names[v]=k
-seen={k:v for k,v in seen.items() if (k.startswith('ep|') and v>=(datetime.date.fromisoformat(TODAY)-datetime.timedelta(days=45)).isoformat()) or (not k.startswith('ep|') and k.split('|')[3]>=TODAY)}
+seen={k:v for k,v in seen.items() if (k.startswith(('ep|','mina|')) and v>=(datetime.date.fromisoformat(TODAY)-datetime.timedelta(days=45)).isoformat()) or (not k.startswith(('ep|','mina|')) and k.split('|')[3]>=TODAY)}
 json.dump(seen,open(W+'/seen.json','w',encoding='utf-8'),ensure_ascii=False)
 json.dump({"gen":TODAY,"inst":names,"logo":[logos.get(n,"") for n in names],"jobs":jobs},open(SITE+'/data.json','w',encoding='utf-8'),ensure_ascii=False,separators=(',',':'))
-print(f'convocatorias={len(jobs)} empleosperu={ep} sin_enlace={dropped} enlaces_rotos={dl} instituciones={len(inst)} con_logo={sum(1 for n in names if logos.get(n))} nuevas_hoy={sum(1 for x in jobs if x["v"]==TODAY)} tam={os.path.getsize(SITE+"/data.json")//1024}KB')
+print(f'convocatorias={len(jobs)} empleosperu={ep} mineras={mn} sin_enlace={dropped} enlaces_rotos={dl} instituciones={len(inst)} con_logo={sum(1 for n in names if logos.get(n))} nuevas_hoy={sum(1 for x in jobs if x["v"]==TODAY)} tam={os.path.getsize(SITE+"/data.json")//1024}KB')
 print(sorted(collections.Counter(x['r'] for x in jobs).items()))

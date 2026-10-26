@@ -11,3 +11,6 @@ work/dl/*
 !work/dl/empleosperu.json
 !work/dl/rumbominero.json
 !work/eplogos/
+!work/dl/mineras.json
+!work/dl/proactivo.json
+!work/dl/energiminas.json

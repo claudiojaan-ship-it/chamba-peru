@@ -249,7 +249,8 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .post .src{font-size:11.5px;color:var(--muted)}
 .state{font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;align-self:flex-start}
 .s-open{background:var(--green-soft);color:#14663A}.s-soon{background:var(--orange-soft);color:#8A4A00}.s-closed{background:#EEF0F2;color:#4A525B}.s-alert{background:var(--red-soft);color:var(--red-dark)}
-.post .ph .t-intl{left:auto;right:10px;background:#1B1F24}
+.post .ph .t-intl{left:10px;top:auto;bottom:10px;background:#1B1F24}
+.post .ph .star{top:10px;right:10px;width:38px;height:38px;box-shadow:0 2px 8px rgba(0,0,0,.25)}
 .post .next{display:flex;gap:6px;align-items:flex-start;color:#8A4A00;background:var(--orange-soft);border-radius:6px;padding:6px 9px;font-size:12.5px}
 .t-empleo{background:#37474F}.t-mineria{background:#7A4E1F}.post .ph .t-new{left:auto;right:10px;top:auto;bottom:10px;background:var(--gold);color:#3A2B00}.t-emprende{background:#AD1457}
 .newslist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
@@ -519,9 +520,9 @@ const nf = n => n.toLocaleString("es-PE");
 const fold = s => (s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
 const days = j => Math.round((pd(j.f) - TODAY) / 864e5);
 const isNew = j => j.v >= NEWFROM;
-const live = () => DB ? DB.jobs.filter(j => days(j) >= 0) : [];
+const live = () => DB ? DB.jobs.filter(j => !j.ghost && days(j) >= 0) : [];
 const photo = k => PHOTOS[k] ? PHOTOS[k][0] : "";
-function pill(j){ if (j.o === "ep") return `<span class="pill p-open">Publicado el ${fecha(j.pub)}</span>`; const d = days(j); return d === 0 ? `<span class="pill p-today">Cierra hoy</span>` : d <= 7 ? `<span class="pill p-week">Cierra en ${d} día${d>1?"s":""}</span>` : `<span class="pill p-open">Vigente</span>`; }
+function pill(j){ if (days(j) < 0) return `<span class="pill p-sec">Cerrada · ${fecha(j.f)}</span>`; if (j.o === "ep" || j.o === "mina") return `<span class="pill p-open">Publicado el ${fecha(j.pub)}</span>`; const d = days(j); return d === 0 ? `<span class="pill p-today">Cierra hoy</span>` : d <= 7 ? `<span class="pill p-week">Cierra en ${d} día${d>1?"s":""}</span>` : `<span class="pill p-open">Vigente</span>`; }
 function avatar(n){
   const name = INST[n] || "";
   if (LOGO[n]) return `<span class="av lg"><img src="${LOGO[n]}" alt="Logo de ${esc(name)}" loading="lazy"></span>`;
@@ -532,10 +533,15 @@ function avatar(n){
 }
 
 /* ---------- Guardados (solo en este navegador) ---------- */
-const keyOf = j => [j.n, j.p, j.f].join("|");
-let SAVED = new Set();
-try { SAVED = new Set(JSON.parse(localStorage.getItem("cp-saved") || "[]")); } catch {}
-function persist(){ try { localStorage.setItem("cp-saved", JSON.stringify([...SAVED])); } catch {} $("#savedN").textContent = SAVED.size; }
+/* Guardados: se guarda una copia completa en este navegador, así no se borran aunque venzan o salgan de la lista */
+const keyOf = j => "j:" + [INST[j.n], j.p, j.f].join("|");
+let SAVED = new Map(), OLDKEYS = [];
+try { SAVED = new Map(Object.entries(JSON.parse(localStorage.getItem("cp-guardados") || "{}"))); } catch {}
+try { OLDKEYS = JSON.parse(localStorage.getItem("cp-saved") || "[]"); } catch {}
+function persist(){ try { localStorage.setItem("cp-guardados", JSON.stringify(Object.fromEntries(SAVED))); } catch {} $("#savedN").textContent = SAVED.size; }
+function snapJob(j){ const {id, _s, n, ...rest} = j; return {type:"job", inst: INST[n], logo: LOGO[n] || "", ...rest}; }
+function toggleJob(j){ const k = keyOf(j); SAVED.has(k) ? SAVED.delete(k) : SAVED.set(k, snapJob(j)); persist(); return SAVED.has(k); }
+function togglePost(p){ const k = "p:" + p.id; SAVED.has(k) ? SAVED.delete(k) : SAVED.set(k, {type:"post", ...p}); persist(); return SAVED.has(k); }
 const starBtn = j => { const on = SAVED.has(keyOf(j)); return `<button class="star" data-star="${j.id}" aria-pressed="${on}" aria-label="${on ? "Quitar de guardados" : "Guardar convocatoria"}">${ico("i-book")}</button>`; };
 
 /* ---------- Piezas ---------- */
@@ -544,7 +550,7 @@ function jobCard(j){
     <div class="job-top">${avatar(j.n)}<div style="min-width:0;display:grid;gap:3px"><div class="job-inst">${esc(INST[j.n])}</div><h3>${esc(j.p)}</h3></div></div>
     <p>${esc(j.q)}</p>
     <div style="display:flex;gap:6px;flex-wrap:wrap">${isNew(j) ? `<span class="pill p-new">Nuevo</span>` : ""}${pill(j)}<span class="pill p-sec">${esc(SECT[j.c][0])}</span></div>
-    <div class="job-meta">${j.s ? `<span class="sal num">${soles(j.s)}</span>` : `<span>Sueldo en bases</span>`}<span>${ico("i-pin")}${esc(j.r)}</span><span class="num">${ico("i-cal")}${j.o === "ep" ? "Empleos Perú" : "Hasta " + fecha(j.f)}</span></div>
+    <div class="job-meta">${j.s ? `<span class="sal num">${soles(j.s)}</span>` : `<span>Sueldo en bases</span>`}<span>${ico("i-pin")}${esc(j.r)}</span><span class="num">${ico("i-cal")}${j.o === "ep" ? "Empleos Perú" : j.o === "mina" ? "Portal de la minera" : "Hasta " + fecha(j.f)}</span></div>
   </article>`;
 }
 /* Estado de un programa según sus fechas: se recalcula cada día en el navegador */
@@ -566,7 +572,8 @@ const byState = (a,b) => { const x = pstate(a), y = pstate(b); return x.r - y.r 
 const usable = () => POSTS.filter(p => p.ok !== false && !(p.auto && p.vence && pd(p.vence) < TODAY));
 function postCard(p){
   const s = pstate(p);
-  return `<article class="post" id="post-${p.id}"><div class="ph"><img src="${photo(p.img)}" alt="" loading="lazy"><span class="tag t-${p.cat}">${PCAT[p.cat] || "Programa"}</span>${p.auto ? `<span class="tag t-new">Nuevo</span>` : ""}${p.ambito === "intl" ? `<span class="tag t-intl">Extranjero</span>` : ""}</div>
+  const on = SAVED.has("p:" + p.id);
+  return `<article class="post" id="post-${p.id}"><div class="ph"><img src="${photo(p.img)}" alt="" loading="lazy"><button class="star" data-pstar="${esc(p.id)}" aria-pressed="${on}" aria-label="${on ? "Quitar de guardados" : "Guardar"}">${ico("i-book")}</button><span class="tag t-${p.cat}">${PCAT[p.cat] || "Programa"}</span>${p.auto ? `<span class="tag t-new">Nuevo</span>` : ""}${p.ambito === "intl" ? `<span class="tag t-intl">Extranjero</span>` : ""}</div>
     <div class="bd"><span class="state ${STCLS[s.k]}">${esc(s.t)}</span><h3>${esc(p.title)}</h3><div class="job-inst">${esc(p.inst)}</div><p>${esc(p.desc)}</p>
     ${(s.k === "closed" || s.k === "annual" || s.k === "none") && p.proximo ? `<p class="next">${ico("i-cal")} ${esc(p.proximo)}</p>` : ""}
     ${p.facts.length ? `<ul class="facts">${p.facts.map(f=>`<li>${esc(f)}</li>`).join("")}</ul>` : ""}
@@ -720,17 +727,20 @@ V.inicio = () => {
   </div>`;
 };
 function mineriaBlock(L){
-  const jobs = L.filter(j => (j.k||[]).includes("mineria")).sort((a,b) => b.s - a.s).slice(0, 3);
+  const jobs = L.filter(j => (j.k||[]).includes("mineria")).sort((a,b) => (b.o === "mina") - (a.o === "mina") || b.s - a.s).slice(0, 6);
   const nw = NEWS.filter(n => n.cat === "mineria").slice(0, 4);
-  if (!jobs.length && !nw.length) return "";
-  return `<section class="section"><div class="sec-head"><div><h2>Minería: empleos y prácticas</h2><p>Convocatorias de las mineras y empleos del sector. Las noticias vienen de Rumbo Minero y se actualizan solas.</p></div><button class="linkbtn" data-go="empleos" data-k="mineria">Ver empleos de minería →</button></div>${nw.length ? newsList(nw) : ""}${jobs.length ? `<div class="jobs" style="margin-top:14px">${jobs.map(jobCard).join("")}</div>` : ""}</section>`;
+  const portals = [["Antamina","Portal oficial de empleo","https://mastalento.antamina.com/"],["Buenaventura","Portal oficial de empleo","https://trabajaconnosotros.buenaventura.pe/"],["Las Bambas (MMG)","Vacantes oficiales","https://careers.mmg.com/jobs/search/search-page-mmg-careers-las-bambas"],["Southern Perú","Convocatorias y prácticas","https://linktr.ee/southerncoppercorporation"],["Computrabajo","Empleos de minería","https://pe.computrabajo.com/trabajo-de-mineria"],["Bumeran","Empleos de minería","https://www.bumeran.com.pe/empleos-busqueda-mineria.html"],["LinkedIn","Minería en Perú","https://www.linkedin.com/jobs/search/?keywords=miner%C3%ADa&location=Per%C3%BA"],["Indeed","Minería en Perú","https://pe.indeed.com/jobs?q=miner%C3%ADa"]];
+  const n = L.filter(j => (j.k||[]).includes("mineria")).length;
+  return `<section class="section"><div class="sec-head"><div><h2>Minería: empleos y prácticas</h2><p>Vacantes de los portales oficiales de Antamina y Buenaventura, empleos del sector y convocatorias publicadas por Rumbo Minero, ProActivo y Energiminas. Se actualizan solas.</p></div><button class="linkbtn" data-go="empleos" data-k="mineria">Ver los ${nf(n)} empleos de minería →</button></div>${nw.length ? newsList(nw) : ""}${jobs.length ? `<div class="jobs" style="margin-top:14px">${jobs.map(jobCard).join("")}</div>` : ""}
+    <div class="box" style="margin-top:14px"><h3>Postula directo en los portales de las mineras</h3><div class="portal-grid" style="grid-template-columns:repeat(auto-fill,minmax(170px,1fr))">${portals.map(([t,d,u]) => `<a class="portal" href="${u}" target="_blank" rel="noopener">${esc(t)}<small>${esc(d)}</small></a>`).join("")}</div></div></section>`;
 }
 V.empleos = () => `<section class="banner"><img class="bg" src="${photo("x-vivienda")}" alt=""><div class="wrap"><span class="crumbs"><button data-go="inicio">Portada</button> › Empleos</span><h1>Convocatorias de trabajo 2026</h1><p>CAS del Estado, prácticas y empleos privados en todo el Perú. Filtra por región, estudios, sector y plazo, y entra a la convocatoria oficial.</p></div>${credit("x-vivienda")}</section>
   <div class="wrap page">${DB ? filtersHTML(true) : skel(6)}</div>`;
 V.guardados = () => {
-  const L = live().filter(j => SAVED.has(keyOf(j))).sort((a,b) => a.f.localeCompare(b.f));
-  return `<section class="banner"><img class="bg" src="${photo("x-library")}" alt=""><div class="wrap"><span class="crumbs"><button data-go="inicio">Portada</button> › Guardados</span><h1>Mis convocatorias guardadas</h1><p>Se guardan solo en este navegador. Las que vencen desaparecen solas.</p></div>${credit("x-library")}</section>
-  <div class="wrap page">${!DB ? skel(3) : L.length ? `<div class="results"><span><b class="num">${L.length}</b> guardadas, ordenadas por fecha de cierre</span></div><div class="jobs">${L.map(jobCard).join("")}</div>` : `<div class="empty">Aún no guardas convocatorias. Toca el marcador de la esquina de cualquier tarjeta para tenerla aquí.<br><br><button class="btn btn-sm" data-go="empleos">Buscar convocatorias</button></div>`}</div>`;
+  const L = DB ? DB.jobs.filter(j => SAVED.has(keyOf(j))).sort((a,b) => (days(a) < 0) - (days(b) < 0) || a.f.localeCompare(b.f)) : [];
+  const PS = [...SAVED.values()].filter(x => x.type === "post");
+  return `<section class="banner"><img class="bg" src="${photo("x-library")}" alt=""><div class="wrap"><span class="crumbs"><button data-go="inicio">Portada</button> › Guardados</span><h1>Mis guardados</h1><p>Trabajos, becas y programas que guardaste. Se quedan aquí aunque venzan, hasta que tú los quites. Se guardan en este navegador.</p></div>${credit("x-library")}</section>
+  <div class="wrap page">${!DB ? skel(3) : (L.length || PS.length) ? `${L.length ? `<div class="sec-head"><div><h2>Trabajos guardados</h2></div></div><div class="results"><span><b class="num">${L.length}</b> trabajos · primero los vigentes</span></div><div class="jobs">${L.map(jobCard).join("")}</div>` : ""}${PS.length ? `<div class="sec-head" style="margin-top:30px"><div><h2>Becas y programas guardados</h2></div></div><div class="posts">${PS.map(postCard).join("")}</div>` : ""}` : `<div class="empty">Aún no guardas nada. Toca el marcador de cualquier trabajo, beca o programa para tenerlo aquí.<br><br><button class="btn btn-sm" data-go="empleos">Buscar trabajos</button> <button class="btn btn-sm btn-line" data-go="gratis">Ver becas y programas</button></div>`}</div>`;
 };
 V.regiones = () => {
   const zones = {};
@@ -891,11 +901,13 @@ function go(view, opts = {}, push = true){
   const hf = $("#heroFind"); if (hf) hf.addEventListener("submit", e => { e.preventDefault(); go("empleos", {q:$("#hq").value, r:$("#hr").value, n:$("#hn").value}); });
 }
 function refreshStars(){
+  document.querySelectorAll("[data-pstar]").forEach(b => { const on = SAVED.has("p:" + b.dataset.pstar); b.setAttribute("aria-pressed", on); b.setAttribute("aria-label", on ? "Quitar de guardados" : "Guardar"); });
   document.querySelectorAll("[data-star]").forEach(b => { const j = DB.jobs[+b.dataset.star]; const on = SAVED.has(keyOf(j)); b.setAttribute("aria-pressed", on); if (b.classList.contains("btn")) b.innerHTML = `${ico("i-book")} ${on ? "Guardada" : "Guardar"}`; else b.setAttribute("aria-label", on ? "Quitar de guardados" : "Guardar convocatoria"); });
 }
 document.addEventListener("click", e => {
   const t = e.target;
-  const st = t.closest("[data-star]"); if (st) { const j = DB.jobs[+st.dataset.star], k = keyOf(j); SAVED.has(k) ? SAVED.delete(k) : SAVED.add(k); persist(); refreshStars(); toast(SAVED.has(k) ? "Guardada en este navegador" : "Quitada de guardados"); if (current === "guardados" && !t.closest(".modal")) go("guardados", {}, false); return; }
+  const ps = t.closest("[data-pstar]"); if (ps) { const id = ps.dataset.pstar, pp = POSTS.find(x => x.id === id) || SAVED.get("p:" + id); if (pp) { const on = togglePost(pp); refreshStars(); toast(on ? "Guardado. Lo verás en Guardados aunque venza" : "Quitado de guardados"); if (current === "guardados") go("guardados", {}, false); } return; }
+  const st = t.closest("[data-star]"); if (st) { const j = DB.jobs[+st.dataset.star]; const on = toggleJob(j); refreshStars(); toast(on ? "Guardado. Lo verás en Guardados aunque venza" : "Quitado de guardados"); if (current === "guardados" && !t.closest(".modal")) go("guardados", {}, false); return; }
   const close = t.closest("[data-close]"); const modal = t.closest(".modal");
   if (modal && (t === modal || close)) { modal.remove(); if (!t.closest("[data-region]")) return; }
   const cp = t.closest("[data-copy]"); if (cp) { navigator.clipboard?.writeText(cp.dataset.copy).then(() => toast("Enlace copiado"), () => toast("No se pudo copiar; mantén presionado el botón Ver convocatoria")); return; }
@@ -936,6 +948,15 @@ fetch("data.json", {cache: "no-cache"}).then(r => r.json()).then(d => {
   INST = d.inst; LOGO = d.logo || [];
   d.jobs.forEach((j,i) => { j.id = i; j._s = " " + fold([j.p, INST[j.n], j.r, j.q, SECT[j.c][0], ...(j.d||[]).map(x => x[1]), ...(j.k||[]).map(k => CARR[k])].join(" ")).replace(/[^a-z0-9ñ./]+/g, " ") + " "; });
   NEWFROM = d.gen;
+  const have = new Set(d.jobs.map(j => "j:" + [INST[j.n], j.p, j.f].join("|")));
+  for (const k of OLDKEYS) { const [, p, f] = String(k).split("|"); const j = d.jobs.find(x => x.p === p && x.f === f); if (j) SAVED.set("j:" + [INST[j.n], j.p, j.f].join("|"), snapJob(j)); }
+  if (OLDKEYS.length) { try { localStorage.removeItem("cp-saved"); } catch {} OLDKEYS = []; }
+  for (const [k, x] of SAVED) if (x.type === "job" && !have.has(k)) {
+    const {type, inst, logo, ...rest} = x; INST.push(inst); LOGO.push(logo);
+    d.jobs.push({...rest, n: INST.length - 1, ghost: true});
+  }
+  d.jobs.forEach((j,i) => { j.id = i; j._s = j._s || " " + fold([j.p, INST[j.n], j.r, j.q].join(" ")) + " "; });
+  persist();
   DB = d;
   $("#genTxt").textContent = `Actualizado el ${fecha(d.gen)} de ${d.gen.slice(0,4)}`;
   ticker(); go(current, lastOpts, false);
